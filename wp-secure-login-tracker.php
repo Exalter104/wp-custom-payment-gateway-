@@ -15,12 +15,14 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin Constants
-define('CUSTOM_WP_LOGIN_PATH', plugin_dir_path(__FILE__));
-define('CUSTOM_WP_LOGIN_URL', plugin_dir_url(__FILE__));
-define('CUSTOM_WP_LOGIN_VERSION', '1.0.0');
+define('WP_SECURE_LOGIN_PATH', plugin_dir_path(__FILE__));
+define('WP_SECURE_LOGIN_URL', plugin_dir_url(__FILE__));
+define('WP_SECURE_LOGIN_VERSION', '1.0.0');
 
 // Include Core Plugin Files
-require_once CUSTOM_WP_LOGIN_PATH . 'admin/menu.php';
+require_once WP_SECURE_LOGIN_PATH . 'admin/menu.php';
+require_once WP_SECURE_LOGIN_PATH . 'includes/settings.php';
+
 
 // Activation & Deactivation Hooks
 function custom_wp_login_activate() {
