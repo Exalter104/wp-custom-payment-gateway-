@@ -1,0 +1,38 @@
+Folder Structure Analysis
+✅admin/ → Admin-related PHP files
+
+logs-page.php → Login logs ka page
+menu.php → Plugin menu manage karne ke liye
+settings.php → Plugin settings page
+
+✅assets/ → CSS & JS files
+
+css/style.css → Styling ke liye
+js/script.js → JavaScript functionality ke liye
+
+✅includes/ → Core logic wali PHP files
+
+activity-logs.php → User activity logs handle karne ke liye
+database.php → Database functions
+login_tracker.php → Login tracking ka main logic
+notification.php → Notifications manage karne ke liye
+
+✅languages/ → Translation files
+
+.mo & .po files for localization
+Root Files:
+
+✅wp-secure-login-tracker.php → Main plugin file
+uninstall.php → Plugin uninstall logic
+readme.txt → Documentation
+
+
+Agar hum step-by-step code likhna shuru karein, to yeh follow karna best hoga:
+✅ Step 1: menu.php (Plugin Menu Setup)
+✅ Step 2: logs-page.php (Login Logs UI)
+✅ Step 3: login_tracker.php (Tracking Logic)
+✅ Step 4: database.php (Database Functions)
+✅ Step 5: activity-logs.php (Logs Fetching)
+✅ Step 6: notification.php (Email/Alerts)
+✅ Step 7: settings.php (Settings Page)
+✅ Step 8: Assets Integration (CSS/JS)

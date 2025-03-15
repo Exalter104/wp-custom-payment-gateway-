@@ -1,0 +1,40 @@
+<?php
+/**
+ * Plugin Name: Custom WP Login Customizer
+ * Plugin URI:  https://yourwebsite.com
+ * Description: A custom WordPress login page customizer with advanced features.
+ * Version: 1.0.0
+ * Author: Exarth
+ * Author URI: https://yourwebsite.com
+ * License: GPL v2 or later
+ * Text Domain: custom-wp-login
+ */
+
+if (!defined('ABSPATH')) {
+    exit; // Direct access restriction
+}
+
+// Plugin Constants
+define('CUSTOM_WP_LOGIN_PATH', plugin_dir_path(__FILE__));
+define('CUSTOM_WP_LOGIN_URL', plugin_dir_url(__FILE__));
+define('CUSTOM_WP_LOGIN_VERSION', '1.0.0');
+
+// Include Core Plugin Files
+require_once CUSTOM_WP_LOGIN_PATH . 'admin/menu.php';
+
+// Activation & Deactivation Hooks
+function custom_wp_login_activate() {
+    // Activation logic
+}
+register_activation_hook(__FILE__, 'custom_wp_login_activate');
+
+function custom_wp_login_deactivate() {
+    // Deactivation logic
+}
+register_deactivation_hook(__FILE__, 'custom_wp_login_deactivate');
+
+// Initialize the Plugin
+function custom_wp_login_init() {
+    //  Custom_WP_Login();
+}
+add_action('plugins_loaded', 'custom_wp_login_init');
