@@ -21,4 +21,24 @@ $attributes=shortcode_atts( array(
 
 return "Username: ".$attributes["username"]."<br>Password: ".$attributes["password"];
 }
-?>
+
+// DB operations shortcode for post
+//step 1: create a shortcode built in code
+add_shortcode("db-operations","show_post_titles_and_content");
+
+function show_post_titles_and_content(){
+
+    global $wpdb;
+    $table_prefix=$wpdb->prefix;//wp_
+    $table_name=$table_prefix."posts";
+    $query=$wpdb->get_results( "SELECT post_title from {$table_name} WHERE post_type='post' AND post_status='publish'");
+if (count($query)>0) {
+    $outputHtml="<ul>";
+    foreach ($query as $queries) {
+    $outputHtml.="<li>".$queries->post_title."</li>";
+    }
+    $outputHtml.="</ul>";
+    return $outputHtml;
+
+}
+    }
