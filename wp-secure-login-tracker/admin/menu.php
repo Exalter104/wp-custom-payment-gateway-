@@ -1,5 +1,6 @@
 <?php
-// Exit if accessed directly
+//Admin menu aur submenus add karne ke liye. (Example: Login Logs, Settings).
+
 if (!defined('ABSPATH')) {
     exit;
 }

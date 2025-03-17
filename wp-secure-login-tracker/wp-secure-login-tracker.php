@@ -1,4 +1,5 @@
 <?php
+//Plugin ka main file. Isme basic hooks, plugin info, activation/deactivation ka code aayega.
 /**
  * Plugin Name: Custom WP Login Customizer
  * Plugin URI:  https://yourwebsite.com

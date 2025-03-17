@@ -1,5 +1,6 @@
 <?php
-// Exit if accessed directly
+//Plugin settings page ka backend (options API).
+
 if (!defined('ABSPATH')) {
     exit;
 }
