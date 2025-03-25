@@ -26,6 +26,7 @@ register_activation_hook(__FILE__, 'csv_data_uploader_table');
 
 // ✅ Enqueue JS files
 add_action('wp_enqueue_scripts', 'csv_data_uploader_scripts');
+
 function csv_data_uploader_scripts(){
     wp_enqueue_script(
         'csv-data-uploader-script',
@@ -35,6 +36,22 @@ function csv_data_uploader_scripts(){
         true
     );
 }
+// ajax call
+wp_localize_script(
+    'csv-data-uploader-script',
+    'csv_data_uploader_ajax_object',
+    array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+      
+    )
+);
+// capture ajax requests
+add_action("wp_ajax_csv_data_uploader", "csv_data_uploader_handler");// when user logged in
+add_action("wp_ajax_nopriv_csv_data_uploader", "csv_data_uploader_handler");// when user is logged out
+function csv_data_uploader_handler(){
+    echo json_encode(array("message"=>"Hello from the server"));
+}
+
 
 // ✅ Enqueue CSS files
 add_action('wp_enqueue_scripts', 'exarth_enqueue_csv_styles');

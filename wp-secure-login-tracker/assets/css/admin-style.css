@@ -1,0 +1,109 @@
+/* Admin Panel - Login Logs Styling */
+
+/* Container Styling */
+.wp-secure-login-logs-wrap {
+    background: #fff;
+    padding: 25px;
+    margin-top: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.wp-secure-login-logs-wrap h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* Filter Form Styling */
+.wp-secure-login-logs-wrap .wslt-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.wp-secure-login-logs-wrap select {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    transition: border 0.3s ease;
+}
+
+.wp-secure-login-logs-wrap select:focus {
+    border-color: #2271b1;
+    outline: none;
+}
+
+/* Buttons Styling */
+.wp-secure-login-logs-wrap .button-primary {
+    background: linear-gradient(135deg, #2271b1, #1d5ea8);
+    border: none;
+    padding: 10px 18px;
+    margin-right: 10px;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.wp-secure-login-logs-wrap .button-primary:hover {
+    background: linear-gradient(135deg, #1d5ea8, #164c89);
+}
+
+.wp-secure-login-logs-wrap .button-secondary {
+    background: #f4f4f4;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: 0.3s ease;
+}
+
+.wp-secure-login-logs-wrap .button-secondary:hover {
+    background: #eaeaea;
+}
+
+/* Table Styling */
+.wp-secure-login-logs-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.wp-secure-login-logs-wrap th,
+.wp-secure-login-logs-wrap td {
+    padding: 14px 12px;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+.wp-secure-login-logs-wrap th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+}
+
+.wp-secure-login-logs-wrap tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.wp-secure-login-logs-wrap tr:hover {
+    background-color: #f0f0f0;
+    transition: 0.3s ease;
+}
+
+/* Buttons Wrapper */
+.wp-secure-login-logs-wrap .wslt-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
