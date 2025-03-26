@@ -1,6 +1,6 @@
 <?php
 global $wpdb;
-$table = $wpdb->prefix . 'secure_login_logs';
+$table = $wpdb->prefix . 'wslt_login_logs';
 
 // Delete all logs
 $wpdb->query("DELETE FROM $table");

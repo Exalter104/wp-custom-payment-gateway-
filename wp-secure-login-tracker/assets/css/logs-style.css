@@ -1,0 +1,111 @@
+/* Main Container Styling */
+.wslt-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+/* Headings */
+.wslt-container h2 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Filter Form */
+.wslt-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.wslt-filter-form label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.wslt-filter-form select,
+.wslt-filter-form input[type="submit"] {
+    height: 38px; /* Ensure equal height */
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.wslt-filter-form input[type="submit"] {
+    background-color: #416937;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+}
+
+.wslt-filter-form input[type="submit"]:hover {
+    background-color: #416937;
+}
+
+/* Buttons */
+.wslt-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.wslt-buttons input[type="submit"] {
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.wslt-buttons input[type="submit"]:first-child {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.wslt-buttons input[type="submit"]:first-child:hover {
+    background-color: #218838;
+}
+
+.wslt-buttons input[type="submit"]:last-child {
+    background-color: #a32a0b;
+    color: #fff;
+}
+
+.wslt-buttons input[type="submit"]:last-child:hover {
+    background-color: #a32a0b;
+}
+
+/* Logs Table */
+.wslt-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.wslt-log-table th, .wslt-log-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.wslt-log-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.wslt-log-table tr:hover {
+    background: #f1f1f1;
+}

@@ -7,7 +7,7 @@ add_action('admin_menu', 'wslt_add_admin_menu');
 
 function wslt_add_admin_menu() {
     add_menu_page(
-        'Login Logs',
+        ' Login Logs',
         'Login Logs',
         'manage_options',
         'wslt-logs',

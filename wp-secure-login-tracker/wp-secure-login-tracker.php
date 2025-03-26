@@ -38,6 +38,7 @@ function wslt_activate_plugin() {
     wslt_create_table();
 }
 
+
 // Deactivation Hook
 register_deactivation_hook( __FILE__, 'wslt_deactivate_plugin' );
 function wslt_deactivate_plugin() {
@@ -77,16 +78,18 @@ function wslt_export_logs_function() {
     exit;
 }
 
-function wslt_enqueue_admin_styles($hook) {
-    if (strpos($hook, 'wslt-logs') !== false) {
-        wp_enqueue_style(
-            'wslt-admin-style',
-            plugin_dir_url(__FILE__) . 'assets/css/wslt-admin-style.css',
-            array(),
-            '1.0.0'
-        );
+if ( ! function_exists('wslt_enqueue_admin_styles') ) {
+    function wslt_enqueue_admin_styles($hook) {
+        if (strpos($hook, 'wslt-logs') !== false) {
+            wp_enqueue_style(
+                'wslt-admin-style',
+                plugin_dir_url(__FILE__) . 'assets/css/logs-style.css',
+                array(),
+                '1.0.0'
+            );
+        }
     }
+    add_action('admin_enqueue_scripts', 'wslt_enqueue_admin_styles');
 }
-add_action('admin_enqueue_scripts', 'wslt_enqueue_admin_styles');
 
 ?>
