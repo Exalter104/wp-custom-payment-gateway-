@@ -92,4 +92,23 @@ if ( ! function_exists('wslt_enqueue_admin_styles') ) {
     add_action('admin_enqueue_scripts', 'wslt_enqueue_admin_styles');
 }
 
+
+// Include IP Blocking Class
+require_once plugin_dir_path(__FILE__) . 'includes/class-ip-block.php';
+
+// Create an instance of IP Block class
+$ip_block = new WP_Secure_Login_IP_Block();
+
+// Block access if IP is blocked
+add_action('init', function() use ($ip_block) {
+    if ($ip_block->is_ip_blocked()) {
+        wp_die('Your IP is temporarily blocked due to multiple failed login attempts. Try again later.');
+    }
+});
+
+// Track failed login attempts
+add_action('wp_login_failed', function($username) use ($ip_block) {
+    $ip_block->log_failed_attempt($username);
+});
+
 ?>
