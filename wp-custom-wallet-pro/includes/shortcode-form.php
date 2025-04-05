@@ -1,27 +1,37 @@
 <?php
-
 defined('ABSPATH') || exit;
 
-function exarth_payment_form_shortcode(){
+function exarth_payment_form_shortcode() {
     ob_start();
     ?>
+<div class="exarth-payment-wrapper">
+    <h2 class="exarth-form-title">Custom Wallet Gateways</h2>
+    <form class="exarth-form" method="POST" action="">
+        <div class="exarth-form-group">
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" placeholder="Enter amount" required>
+        </div>
 
-<form class="exarth-form" method="POST" action="">
-    <label for="amount">Amount:</label><br>
-    <input type="text" id="amount" name="amount" placeholder="Enter amount" required><br>
+        <div class="exarth-form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter phone number" required>
+        </div>
 
-    <label for="phone">Phone Number:</label><br>
-    <input type="text" id="phone" name="phone" placeholder="Enter phone number" required><br>
+        <div class="exarth-form-group">
+            <label for="gateway">Payment Gateway:</label>
+            <select id="gateway" name="gateway" required>
+                <option value="" disabled selected>Select a gateway</option>
+                <option value="easypaisa">EasyPaisa</option>
+                <option value="jazzcash">JazzCash</option>
+                <option value="sadapay">SadaPay</option>
+                <option value="nayapay">NayaPay</option>
+            </select>
+        </div>
 
-    <label for="gateway">Payment Gateway:</label><br>
-    <select id="gateway" name="gateway" required>
-        <option value="easypaisa">EasyPaisa</option>
-        <option value="jazzcash">JazzCash</option>
-    </select><br>
-
-    <button type="submit">Submit Payment</button>
-</form>
+        <button type="submit" class="exarth-submit-button">Submit Payment</button>
+    </form>
+</div>
 <?php
-return ob_get_clean(); // Return the buffered output
+    return ob_get_clean();
 }
 ?>
