@@ -9,21 +9,29 @@ Author: Exarth
 
 
 defined('ABSPATH') || exit;
+
+// Define Constants
+define('EXARTH_PLUGIN_VERSION', '1.0');
+define('EXARTH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+
+// Register Activation Hook
 register_activation_hook(__FILE__, 'exarth_create_payment_table');
-function exarth_create_payment_table() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'custom_payments';
-    $charset_collate = $wpdb->get_charset_collate();
-    
-    $sql = "CREATE TABLE $table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        amount varchar(255) NOT NULL,
-        phone varchar(20) NOT NULL,
-        gateway varchar(50) NOT NULL,
-        status varchar(20) NOT NULL,
-        PRIMARY KEY (id)
-    ) $charset_collate;";
-    
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+
+
+// Import Database Table Creation File
+require_once(EXARTH_PLUGIN_DIR . 'database/table.php');
+require_once(EXARTH_PLUGIN_DIR . 'includes/shortcode-form.php');
+
+// Include required files
+register_activation_hook(__FILE__, 'exarth_create_payment_table');
+
+
+// Enqueue Assets
+add_action('wp_enqueue_scripts', 'exarth_enqueue_assets');
+function exarth_enqueue_assets() {
+    wp_enqueue_style('exarth-style', plugin_dir_url(__FILE__) . 'assets/css/style.css', array(), EXARTH_PLUGIN_VERSION);
+    wp_enqueue_script('exarth-script', plugin_dir_url(__FILE__) . 'assets/js/script.js', array('jquery'), EXARTH_PLUGIN_VERSION, true);
 }
+
+// Add Shortcode for Payment Form
+add_shortcode('exarth_payment', 'exarth_payment_form_shortcode');
