@@ -1,9 +1,0 @@
-
-body.login {
-    background-color: var(--login-bg-color, #ffffff);
-}
-.button-danger {
-    background: #dc3232;
-    color: white;
-    border: none;
-}
