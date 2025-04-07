@@ -6,7 +6,7 @@ function exarth_payment_form_shortcode() {
     ?>
 <div class="exarth-payment-wrapper">
     <h2 class="exarth-form-title">Custom Payment Gateways</h2>
-    <form class="exarth-form" method="POST" action="">
+    <form class="exarth-form" id="exarth-payment-form" method="POST" action="">
         <div class="exarth-form-group">
             <label for="amount">Amount:</label>
             <input type="text" id="amount" name="amount" placeholder="Enter amount" required>
