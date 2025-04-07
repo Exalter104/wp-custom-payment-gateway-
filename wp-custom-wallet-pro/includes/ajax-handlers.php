@@ -1,35 +1,30 @@
 <?php
-
 defined('ABSPATH') || exit;
 
-// AJAX handler for saving payment process
-add_action('wp_ajax_exarth_save_payment', 'exarth_save_payment_callback');
-add_action('wp_ajax_nopriv_exarth_save_payment', 'exarth_save_payment_callback');
-
-
 function exarth_save_payment_callback() {
-
-    // Verify nonce
+    // Nonce verification
     check_ajax_referer('exarth_payment_nonce', 'nonce');
 
-    // get form data
-    
+    // Form data sanitize karte hain
     $amount = sanitize_text_field($_POST['amount']);
     $phone = sanitize_text_field($_POST['phone']);
-
     $gateway = sanitize_text_field($_POST['gateway']);
 
-
-    // Validate form data
-    if (empty($amount) || empty($phone) || empty($gateway)) {
-        wp_send_json_error(array('message' => 'All fields are required.'));
-        wp_die();
+    // Validation checks
+    if (empty($amount) || !is_numeric($amount) || $amount <= 0) {
+        wp_send_json_error(array('message' => 'Invalid amount.'));
+    }
+    if (empty($phone) || !preg_match('/^\d{11}$/', $phone)) {
+        wp_send_json_error(array('message' => 'Invalid phone number.'));
+    }
+    if (empty($gateway) || !in_array($gateway, array('easypaisa', 'jazzcash', 'sadapay', 'nayapay'))) {
+        wp_send_json_error(array('message' => 'Invalid payment gateway.'));
     }
 
-    // save the form data in database
-
+    // Database mein save karo
     global $wpdb;
     $table_name = $wpdb->prefix . 'custom_payments';
+
     $result = $wpdb->insert(
         $table_name,
         array(
@@ -41,11 +36,14 @@ function exarth_save_payment_callback() {
         ),
         array('%s', '%s', '%s', '%s', '%s')
     );
+
+    // Agar database mein save nahi hua
     if ($result === false) {
-        wp_send_json_error(array('message' => 'Failed to save payment.'));
+        wp_send_json_error(array('message' => 'Failed to save payment: ' . $wpdb->last_error));
     }
 
-    wp_send_json_success(array('message' => 'Payment saved successfully.'));
-
+    wp_send_json_success(array('message' => 'Payment saved successfully!'));
 }
-?>
+
+add_action('wp_ajax_exarth_save_payment', 'exarth_save_payment_callback');
+add_action('wp_ajax_nopriv_exarth_save_payment', 'exarth_save_payment_callback');
