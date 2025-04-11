@@ -34,7 +34,7 @@ require_once SLLA_PLUGIN_DIR . 'includes/class-slla-core.php';
 
 // INITIALIZE THE PLUGIN
 function slla_init(){
-    new SSL_Core();
+    new SLLA_Core();
 
 }
 
