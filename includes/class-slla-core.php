@@ -1,55 +1,43 @@
 <?php
-/**
- * YE CLASS PLUGIN KE MAIN LOGIC KO MANAGE KAREGI
- * (E.G., ATTEMPTS TRACKING, LOCKOUT, SETTINGS).
- */
-
-
-
-// AGAR FILE DIRECT ACCESS HO RAHI HAI TOH EXIT KARDO
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // EXIT IF ACCESSED DIRECTLY
+    exit; // Exit if accessed directly
 }
 
-
-
-// MAIN CORE CLASS DEFINE KAR RAHE HAIN
 class SLLA_Core {
+    private $logger;
+    private $lockout;
+    private $admin;
 
-    // CONSTRUCTOR FUNCTION JISME INIT FUNCTION KO CALL KARTE HAIN
     public function __construct() {
-
-        // FUTURE HOOKS KE LIYE PLACEHOLDER
+        $this->load_dependencies();
         $this->init();
     }
 
+    private function load_dependencies() {
+        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-logger.php';
+        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-lockout.php';
+        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-admin.php';
 
+        $this->logger = new SLLA_Logger( $this );
+        $this->lockout = new SLLA_Lockout( $this, $this->logger );
+        $this->admin = new SLLA_Admin( $this );
+    }
 
-    // INIT FUNCTION JO HOOKS KO REGISTER KARTA HAI
     public function init() {
-
-        // ADMIN NOTICE HOOK ADD KAR RAHE HAIN
+        // Admin notice hook add kar rahe hain
         add_action( 'admin_notices', array( $this, 'show_admin_notice' ) );
 
-
-        // CHECK KARTE HAIN KE PLUGIN PEHLI DAFA ACTIVATE HUA HAI YA NAHI
+        // Check karte hain ke plugin pehli dafa activate hua hai ya nahi
         if ( get_option( 'slla_plugin_activated_notice' ) !== 'yes' ) {
-            
-            // AGAR PEHLI DAFA ACTIVATE HUA HAI TO ADMIN_INIT HOOK MEIN FLAG SET KARTE HAIN
-            add_action( 'admin_init', array( $this, 'set_activation_notice_flag' ) );
+            $this->set_activation_notice_flag();
         }
     }
 
-
-    // PLUGIN ACTIVATION NOTICE FLAG SET KARNE WALA FUNCTION
     public function set_activation_notice_flag() {
         update_option( 'slla_plugin_activated_notice', 'yes' );
     }
 
-    
-    // ADMIN NOTICE DISPLAY KARNE WALA FUNCTION
     public function show_admin_notice() {
-        // AGAR ADMIN PANEL MEIN HAIN AUR NOTICE ABHI TAK DISPLAY NAHI HUA TOH
         if ( is_admin() && get_option( 'slla_plugin_activated_notice' ) !== 'yes' ) {
             ?>
 <div class="notice notice-success is-dismissible">
@@ -59,5 +47,16 @@ class SLLA_Core {
 <?php
         }
     }
+
+    public function get_ip_address() {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+        if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+            $ip_list = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+            $ip = trim( $ip_list[0] );
+        }
+        if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+            $ip = '0.0.0.1';
+        }
+        return sanitize_text_field( $ip );
+    }
 }
-?>
