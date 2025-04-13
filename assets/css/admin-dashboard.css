@@ -1,0 +1,355 @@
+/* General Dashboard Styling */
+.slla-dashboard-wrap {
+    background-color: #E9F1FA; /* Light blue background */
+    padding: 40px; /* Increased padding for more breathing space */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Grid Layout */
+.slla-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px; /* Gap between cards */
+}
+
+/* Card Styling for Sections */
+.slla-card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px; /* Increased padding inside cards */
+    margin-bottom: 20px; /* Added default margin to ensure vertical spacing without hover */
+    transition: transform 0.2s ease;
+}
+
+/* Hover Effect */
+.slla-card:hover {
+    transform: translateY(-3px); /* Retain the hover effect */
+}
+
+/* Heading Styling */
+.slla-dashboard-wrap h1 {
+    color: #1D2327;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px; /* Increased margin below the main heading */
+}
+
+.slla-dashboard-wrap h2 {
+    color: #1D2327;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 25px; /* Increased margin below section headings */
+    display: flex;
+    align-items: center;
+}
+
+.slla-dashboard-wrap h2::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    font-family: "Dashicons";
+    font-size: 24px;
+    line-height: 24px;
+    vertical-align: middle;
+}
+
+/* Specific Icons for Headings using Dashicons */
+.slla-quick-stats h2::before {
+    content: "\f239"; /* Dashicon for chart */
+    color: #0073AA;
+}
+
+.slla-failed-attempts h2::before {
+    content: "\f534"; /* Dashicon for warning */
+    color: #F5A623;
+}
+
+.slla-locked-ips h2::before {
+    content: "\f160"; /* Dashicon for lock */
+    color: #D63638;
+}
+
+.slla-successful-logins h2::before {
+    content: "\f147"; /* Dashicon for checkmark */
+    color: #46B450;
+}
+
+.slla-lockout-logs h2::before {
+    content: "\f321"; /* Dashicon for clipboard */
+    color: #D63638;
+}
+
+.slla-security-checklist h2::before {
+    content: "\f328"; /* Dashicon for checklist */
+    color: #0073AA;
+}
+
+.slla-premium-promotion h2::before {
+    content: "\f524"; /* Dashicon for star */
+    color: #F5A623;
+}
+
+.slla-settings h2::before {
+    content: "\f111"; /* Dashicon for settings */
+    color: #0073AA;
+}
+
+/* Quick Stats Styling */
+.slla-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px; /* Increased gap between stats cards */
+}
+
+.slla-stat {
+    text-align: center;
+    padding: 20px; /* Increased padding inside stats cards */
+    background-color: #F7F9FC;
+    border-radius: 8px;
+}
+
+.slla-stat-label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px; /* Increased margin below label */
+}
+
+.slla-stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1D2327;
+}
+
+/* Table Styling */
+.slla-dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.slla-dashboard-table th,
+.slla-dashboard-table td {
+    padding: 15px 20px; /* Increased padding for table cells */
+    text-align: left;
+    border-bottom: 1px solid #E1E1E1;
+}
+
+.slla-dashboard-table th {
+    background-color: #F7F7F7;
+    color: #1D2327;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.slla-dashboard-table td {
+    color: #444;
+    font-size: 14px;
+}
+
+/* Striped Rows for Tables */
+.slla-dashboard-table tbody tr:nth-child(odd) {
+    background-color: #F9F9F9; /* Light gray for odd rows */
+}
+
+/* Hover Effect on Table Rows */
+.slla-dashboard-table tbody tr:hover {
+    background-color: #F1F5F9; /* Light blue on hover */
+    transition: background-color 0.3s ease;
+}
+
+/* Circular Indicator for Failed Attempts */
+.slla-failed-attempts-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50%;
+    margin: 0 auto 20px auto; /* Increased margin below the circle */
+    transition: background-color 0.3s ease;
+}
+
+.slla-failed-attempts-low {
+    background-color: #46B450; /* Green for 0 attempts */
+}
+
+.slla-failed-attempts-medium {
+    background-color: #F5A623; /* Yellow for 1-3 attempts */
+}
+
+.slla-failed-attempts-high {
+    background-color: #D63638; /* Red for 4+ attempts */
+}
+
+.slla-failed-attempts-text {
+    text-align: center;
+    color: #444;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Button Styling */
+.slla-view-more-btn,
+.slla-upgrade-btn,
+.slla-submit-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #0073AA 0%, #005D8C 100%); /* Gradient background */
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 20px; /* Increased margin above buttons */
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.slla-upgrade-btn {
+    background: linear-gradient(135deg, #F5A623 0%, #D89E1F 100%); /* Gradient for upgrade button */
+}
+
+.slla-view-more-btn:hover,
+.slla-submit-btn:hover {
+    background: linear-gradient(135deg, #005D8C 0%, #004A6F 100%); /* Darker gradient on hover */
+}
+
+.slla-upgrade-btn:hover {
+    background: linear-gradient(135deg, #D89E1F 0%, #C1881B 100%); /* Darker gradient on hover */
+}
+
+/* Security Checklist Styling */
+.slla-security-checklist ul {
+    list-style: none;
+    padding: 0;
+}
+
+.slla-security-checklist li {
+    margin-bottom: 20px; /* Increased margin between checklist items */
+    display: flex;
+    align-items: center;
+}
+
+.slla-security-checklist input[type="checkbox"] {
+    margin-right: 15px; /* Increased margin between checkbox and label */
+    width: 18px;
+    height: 18px;
+}
+
+.slla-security-checklist label {
+    font-size: 14px;
+    color: #444;
+}
+
+/* Premium Promotion Styling */
+.slla-premium-promotion {
+    position: relative;
+    background: linear-gradient(135deg, #F5A623 0%, #D89E1F 100%);
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.slla-premium-promotion h2 {
+    color: #FFFFFF;
+    margin-bottom: 20px; /* Increased margin below heading */
+}
+
+.slla-premium-promotion h2::before {
+    color: #FFFFFF;
+}
+
+.slla-premium-promotion p {
+    font-size: 14px;
+    margin-bottom: 25px; /* Increased margin below paragraph */
+    color: #FFFFFF;
+}
+
+.slla-premium-promotion .slla-upgrade-btn {
+    background: #FFFFFF;
+    color: #F5A623;
+    font-weight: 600;
+}
+
+.slla-premium-promotion .slla-upgrade-btn:hover {
+    background: #F7F9FC;
+    color: #D89E1F;
+}
+
+/* Settings Page Form Styling */
+.slla-settings .form-table th {
+    font-weight: 600; /* Bold labels */
+    color: #1D2327;
+    font-size: 14px;
+    padding: 15px 0; /* Increased padding for better spacing */
+}
+
+.slla-settings .form-table td {
+    padding: 15px 0; /* Increased padding for better spacing */
+}
+
+.slla-settings .form-table p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+/* Input Field Styling */
+.slla-input {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    border: 1px solid #D1D5DB;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+}
+
+.slla-input:focus {
+    border-color: #0073AA;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slla-grid {
+        grid-template-columns: 1fr;
+        gap: 30px; /* Adjusted gap for mobile */
+    }
+
+    .slla-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px; /* Adjusted gap for mobile */
+    }
+
+    .slla-failed-attempts-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 24px;
+        margin-bottom: 15px; /* Adjusted margin for mobile */
+    }
+
+    .slla-dashboard-wrap {
+        padding: 20px; /* Reduced padding for mobile */
+    }
+
+    .slla-card {
+        margin-bottom: 15px; /* Adjusted margin for mobile */
+    }
+
+    .slla-input {
+        max-width: 100%; /* Full width on mobile */
+    }
+}

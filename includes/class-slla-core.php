@@ -4,59 +4,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class SLLA_Core {
-    private $logger;
     private $lockout;
+    private $logger;
     private $admin;
 
     public function __construct() {
-        $this->load_dependencies();
-        $this->init();
-    }
+        $this->lockout = new SLLA_Lockout( $this );
+        $this->logger = new SLLA_Logger();
+        $this->admin = new SLLA_Admin();
 
-    private function load_dependencies() {
-        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-logger.php';
-        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-lockout.php';
-        require_once SLLA_PLUGIN_DIR . 'includes/class-slla-admin.php';
+        // Initialize Admin
+        $this->admin->init();
 
-        $this->logger = new SLLA_Logger( $this );
-        $this->lockout = new SLLA_Lockout( $this, $this->logger );
-        $this->admin = new SLLA_Admin( $this );
-    }
-
-    public function init() {
-        // Admin notice hook add kar rahe hain
-        add_action( 'admin_notices', array( $this, 'show_admin_notice' ) );
-
-        // Check karte hain ke plugin pehli dafa activate hua hai ya nahi
-        if ( get_option( 'slla_plugin_activated_notice' ) !== 'yes' ) {
-            $this->set_activation_notice_flag();
-        }
-    }
-
-    public function set_activation_notice_flag() {
-        update_option( 'slla_plugin_activated_notice', 'yes' );
-    }
-
-    public function show_admin_notice() {
-        if ( is_admin() && get_option( 'slla_plugin_activated_notice' ) !== 'yes' ) {
-            ?>
-<div class="notice notice-success is-dismissible">
-    <p><?php _e( 'Simple Limit Login Attempts plugin is now active! Configure the settings to get started.', 'simple-limit-login-attempts' ); ?>
-    </p>
-</div>
-<?php
-        }
+        // Hooks
+        add_action( 'wp_login_failed', array( $this, 'handle_login_failed' ) );
+        add_action( 'wp_login', array( $this, 'handle_login_success' ), 10, 2 );
+        add_filter( 'authenticate', array( $this, 'check_lockout' ), 30, 3 );
     }
 
     public function get_ip_address() {
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-        if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-            $ip_list = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
-            $ip = trim( $ip_list[0] );
+        return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : '';
+    }
+
+    public function handle_login_failed( $username ) {
+        $ip = $this->get_ip_address();
+        $transient_key = 'slla_attempts_' . md5( $ip );
+        $attempts = get_transient( $transient_key );
+
+        if ( false === $attempts ) {
+            $attempts = 0;
         }
-        if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-            $ip = '0.0.0.1';
-        }
-        return sanitize_text_field( $ip );
+
+        $attempts++;
+        set_transient( $transient_key, $attempts, HOUR_IN_SECONDS );
+
+        $this->lockout->check_and_set_lockout( $ip );
+    }
+
+    public function handle_login_success( $user_login, $user ) {
+        $ip = $this->get_ip_address();
+        $transient_key = 'slla_attempts_' . md5( $ip );
+        delete_transient( $transient_key );
+
+        $this->logger->log_successful_login( $user->user_login, $ip );
+    }
+
+    public function check_lockout( $user, $username, $password ) {
+        return $this->lockout->check_lockout( $user, $username, $password );
     }
 }
