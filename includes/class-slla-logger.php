@@ -35,4 +35,20 @@ class SLLA_Logger {
             array( '%s', '%s', '%s', '%s' )
         );
     }
+
+    public function log_failed_attempt( $username, $ip ) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'slla_logs';
+
+        $wpdb->insert(
+            $table_name,
+            array(
+                'type' => 'failed_attempt',
+                'ip' => sanitize_text_field( $ip ),
+                'username' => sanitize_text_field( $username ),
+                'time' => current_time( 'mysql' ),
+            ),
+            array( '%s', '%s', '%s', '%s' )
+        );
+    }
 }

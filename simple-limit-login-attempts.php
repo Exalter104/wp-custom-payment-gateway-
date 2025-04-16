@@ -29,13 +29,26 @@ require_once SLLA_PLUGIN_DIR . 'includes/class-slla-lockout.php';
 require_once SLLA_PLUGIN_DIR . 'includes/class-slla-logger.php';
 require_once SLLA_PLUGIN_DIR . 'includes/database.php';
 
-// ENQUEUE ADMIN STYLES
+// ENQUEUE ADMIN STYLES AND SCRIPTS
 function slla_enqueue_admin_styles() {
-    // Load styles only on SLLA admin pages
+    // Load styles and scripts only on SLLA admin pages
     $screen = get_current_screen();
     if ( strpos( $screen->id, 'slla-' ) !== false ) {
-        wp_enqueue_style( 'slla-admin-dashboard', SLLA_PLUGIN_URL . '/assets/css/admin-dashboard.css', array(), SLLA_VERSION );
+        // Enqueue Google Fonts (Poppins)
+        wp_enqueue_style( 'slla-google-fonts', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap', array(), null );
+        
+        // Enqueue Plugin Styles with Cache Busting
+        $css_version = SLLA_VERSION . '.' . time(); // Add timestamp to bust cache
+        wp_enqueue_style( 'slla-admin-dashboard', SLLA_PLUGIN_URL . '/assets/css/admin-dashboard.css', array(), $css_version );
         wp_enqueue_style( 'dashicons' ); // Enqueue Dashicons
+
+        // Enqueue JavaScript with Cache Busting
+        $js_version = SLLA_VERSION . '.' . time(); // Add timestamp to bust cache
+        wp_enqueue_script( 'slla-admin-js', SLLA_PLUGIN_URL . '/assets/js/admin-settings.js', array( 'jquery' ), $js_version, true );
+        // Pass translated strings to JavaScript
+        wp_localize_script( 'slla-admin-js', 'sllaSettings', array(
+            'defaultErrorMessage' => __( 'Custom error message for failed login attempts.', 'simple-limit-login-attempts' ),
+        ));
     }
 }
 add_action( 'admin_enqueue_scripts', 'slla_enqueue_admin_styles' );

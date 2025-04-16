@@ -1,45 +1,101 @@
+/* Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* General Dashboard Styling */
 .slla-dashboard-wrap {
-    background-color: #E9F1FA; /* Light blue background */
-    padding: 40px; /* Increased padding for more breathing space */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f5f7fa; /* Light grey background for the dashboard */
+    padding: 30px;
+    min-height: 100vh;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333333; /* Dark grey text */
+}
+
+/* Remove Background Animation (Not Needed for Theme) */
+.slla-dashboard-wrap::before {
+    display: none; /* Remove the pulsing gradient animation */
+}
+
+/* Horizontal Submenu Styling */
+.slla-submenu {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    background: #ffffff; /* White background for submenu */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    border: 1px solid #e0e0e0; /* Light grey border */
+}
+
+.slla-submenu a {
+    color: #666666; /* Medium grey text */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: color 0.3s ease, background 0.3s ease;
+    border-radius: 6px;
+}
+
+.slla-submenu a:hover,
+.slla-submenu a.current {
+    color: #f5a623; /* Yellow for active/hover */
+    background: #fff5e0; /* Light yellow background on hover/active */
 }
 
 /* Grid Layout */
 .slla-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 40px; /* Gap between cards */
+    gap: 30px; /* Spacing between sections */
 }
 
-/* Card Styling for Sections */
+/* Card Styling (White Background with Grey Borders) */
 .slla-card {
-    background-color: #FFFFFF;
+    background: #ffffff; /* White background for cards */
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    padding: 30px; /* Increased padding inside cards */
-    margin-bottom: 20px; /* Added default margin to ensure vertical spacing without hover */
-    transition: transform 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--delay) * 0.2s);
 }
 
-/* Hover Effect */
+.slla-card:nth-child(1) { --delay: 1; }
+.slla-card:nth-child(2) { --delay: 2; }
+.slla-card:nth-child(3) { --delay: 3; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .slla-card:hover {
-    transform: translateY(-3px); /* Retain the hover effect */
+    transform: translateY(-5px); /* Stronger lift on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
 }
 
 /* Heading Styling */
 .slla-dashboard-wrap h1 {
-    color: #1D2327;
+    color: #333333; /* Dark grey heading */
     font-size: 28px;
     font-weight: 600;
-    margin-bottom: 40px; /* Increased margin below the main heading */
+    margin-bottom: 20px;
+    text-transform: none; /* Remove uppercase for a cleaner look */
+    letter-spacing: normal;
 }
 
 .slla-dashboard-wrap h2 {
-    color: #1D2327;
+    color: #333333; /* Dark grey heading */
     font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 25px; /* Increased margin below section headings */
+    font-weight: 600;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
 }
@@ -47,121 +103,59 @@
 .slla-dashboard-wrap h2::before {
     content: "";
     display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
     font-family: "Dashicons";
-    font-size: 24px;
-    line-height: 24px;
+    font-size: 20px;
+    line-height: 20px;
     vertical-align: middle;
 }
 
-/* Specific Icons for Headings using Dashicons */
-.slla-quick-stats h2::before {
-    content: "\f239"; /* Dashicon for chart */
-    color: #0073AA;
-}
-
-.slla-failed-attempts h2::before {
-    content: "\f534"; /* Dashicon for warning */
-    color: #F5A623;
-}
-
-.slla-locked-ips h2::before {
-    content: "\f160"; /* Dashicon for lock */
-    color: #D63638;
-}
-
-.slla-successful-logins h2::before {
-    content: "\f147"; /* Dashicon for checkmark */
-    color: #46B450;
-}
-
-.slla-lockout-logs h2::before {
-    content: "\f321"; /* Dashicon for clipboard */
-    color: #D63638;
-}
-
-.slla-security-checklist h2::before {
-    content: "\f328"; /* Dashicon for checklist */
-    color: #0073AA;
-}
-
-.slla-premium-promotion h2::before {
-    content: "\f524"; /* Dashicon for star */
-    color: #F5A623;
-}
-
-.slla-settings h2::before {
-    content: "\f111"; /* Dashicon for settings */
-    color: #0073AA;
-}
+/* Specific Icons for Headings using Dashicons (Updated with Yellow) */
+.slla-quick-stats h2::before { content: "\f239"; color: #0f1b1f; } /* Dark color for contrast */
+.slla-failed-attempts h2::before { content: "\f534"; color: #f5a623; } /* Yellow */
+.slla-security-checklist h2::before { content: "\f328"; color: #222222; } /* Dark color for contrast */
+.slla-premium-promotion h2::before { content: "\f524"; color: #f5a623; } /* Yellow */
+.slla-settings h2::before { content: "\f111"; color: #f5a623; } /* Yellow */
+.slla-logs h2::before { content: "\f321"; color: #f5a623; } /* Yellow */
+.slla-tools h2::before { content: "\f309"; color: #f5a623; } /* Yellow */
+.slla-ai-insights h2::before { content: "\f101"; color: #f5a623; } /* Yellow for AI Insights */
 
 /* Quick Stats Styling */
 .slla-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 30px; /* Increased gap between stats cards */
+    gap: 25px; /* Spacing between stats cards (already adjusted) */
 }
 
 .slla-stat {
     text-align: center;
-    padding: 20px; /* Increased padding inside stats cards */
-    background-color: #F7F9FC;
+    padding: 20px; /* Adjusted padding for better internal spacing */
+    background: #ffffff; /* White background */
     border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-stat:hover {
+    transform: scale(1.05); /* Slightly larger scale on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
 }
 
 .slla-stat-label {
     display: block;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 8px; /* Increased margin below label */
+    font-size: 13px;
+    color: #666666; /* Medium grey */
+    margin-bottom: 6px;
+    text-transform: uppercase;
 }
 
 .slla-stat-value {
     display: block;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 600;
-    color: #1D2327;
-}
-
-/* Table Styling */
-.slla-dashboard-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #FFFFFF;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.slla-dashboard-table th,
-.slla-dashboard-table td {
-    padding: 15px 20px; /* Increased padding for table cells */
-    text-align: left;
-    border-bottom: 1px solid #E1E1E1;
-}
-
-.slla-dashboard-table th {
-    background-color: #F7F7F7;
-    color: #1D2327;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.slla-dashboard-table td {
-    color: #444;
-    font-size: 14px;
-}
-
-/* Striped Rows for Tables */
-.slla-dashboard-table tbody tr:nth-child(odd) {
-    background-color: #F9F9F9; /* Light gray for odd rows */
-}
-
-/* Hover Effect on Table Rows */
-.slla-dashboard-table tbody tr:hover {
-    background-color: #F1F5F9; /* Light blue on hover */
-    transition: background-color 0.3s ease;
+    color: #f5a623; /* Yellow for values */
 }
 
 /* Circular Indicator for Failed Attempts */
@@ -169,187 +163,766 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 120px;
-    height: 120px;
-    color: #FFFFFF;
-    font-size: 28px;
+    width: 100px;
+    height: 100px;
+    color: #ffffff;
+    font-size: 26px;
     font-weight: bold;
     border-radius: 50%;
-    margin: 0 auto 20px auto; /* Increased margin below the circle */
-    transition: background-color 0.3s ease;
+    margin: 0 auto 15px auto;
+    transition: transform 0.3s ease;
 }
 
-.slla-failed-attempts-low {
-    background-color: #46B450; /* Green for 0 attempts */
+.slla-failed-attempts-circle:hover {
+    transform: scale(1.05);
 }
 
-.slla-failed-attempts-medium {
-    background-color: #F5A623; /* Yellow for 1-3 attempts */
-}
+.slla-failed-attempts-low { background: #207532; } /* Green for low attempts (keeping for contrast) */
+.slla-failed-attempts-medium { background: #f5a623; } /* Yellow for medium attempts */
+.slla-failed-attempts-high { background: #ff6f61; } /* Red for high attempts (keeping for contrast) */
 
-.slla-failed-attempts-high {
-    background-color: #D63638; /* Red for 4+ attempts */
+/* Failed Attempts Section */
+.slla-failed-attempts {
+    margin-top: 30px; /* Space between Quick Stats and Failed Attempts */
 }
 
 .slla-failed-attempts-text {
     text-align: center;
-    color: #444;
-    font-size: 14px;
-    font-weight: 500;
+    color: #666666; /* Medium grey */
+    font-size: 13px;
+    font-weight: 400;
 }
 
-/* Button Styling */
+/* Button Styling (Yellow with Professional Design) */
 .slla-view-more-btn,
 .slla-upgrade-btn,
-.slla-submit-btn {
+.slla-submit-btn,
+.slla-dashboard-wrap button.button {
     display: inline-block;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #0073AA 0%, #005D8C 100%); /* Gradient background */
-    color: #FFFFFF;
+    padding: 12px 24px; /* Larger padding for a professional look */
+    background: #f5a623; /* Yellow background */
+    color: #ffffff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 6px; /* Modern rounded corners */
     font-size: 14px;
-    font-weight: 500;
-    margin-top: 20px; /* Increased margin above buttons */
+    font-weight: 600; /* Bolder text */
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.slla-upgrade-btn {
-    background: linear-gradient(135deg, #F5A623 0%, #D89E1F 100%); /* Gradient for upgrade button */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .slla-view-more-btn:hover,
-.slla-submit-btn:hover {
-    background: linear-gradient(135deg, #005D8C 0%, #004A6F 100%); /* Darker gradient on hover */
+.slla-submit-btn:hover,
+.slla-dashboard-wrap button.button:hover {
+    background: #e69500; /* Darker yellow on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Add shadow on hover */
+}
+
+.slla-upgrade-btn {
+    background: #f5a623; /* Yellow background */
 }
 
 .slla-upgrade-btn:hover {
-    background: linear-gradient(135deg, #D89E1F 0%, #C1881B 100%); /* Darker gradient on hover */
+    background: #e69500; /* Darker yellow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Security Checklist Styling */
+.slla-security-checklist {
+    margin-top: 30px; /* Space above the card (already added) */
+}
+
 .slla-security-checklist ul {
     list-style: none;
     padding: 0;
+    margin-bottom: 25px; /* Space between checkboxes and button (already added) */
 }
 
 .slla-security-checklist li {
-    margin-bottom: 20px; /* Increased margin between checklist items */
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.slla-security-checklist li:hover {
+    background: #fff5e0; /* Light yellow on hover */
 }
 
 .slla-security-checklist input[type="checkbox"] {
-    margin-right: 15px; /* Increased margin between checkbox and label */
-    width: 18px;
-    height: 18px;
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    accent-color: #f5a623; /* Yellow checkbox */
 }
 
 .slla-security-checklist label {
     font-size: 14px;
-    color: #444;
+    color: #333333; /* Dark grey */
+}
+
+/* Center the Save Checklist Button */
+.slla-security-checklist .slla-submit-btn {
+    display: block;
+    margin: 0 auto; /* Center the button */
 }
 
 /* Premium Promotion Styling */
 .slla-premium-promotion {
-    position: relative;
-    background: linear-gradient(135deg, #F5A623 0%, #D89E1F 100%);
-    color: #FFFFFF;
+    background: #ffffff; /* White background */
+    border: 1px solid #e0e0e0; /* Light grey border */
     text-align: center;
+    margin-top: 30px; /* Space between Login Security Checklist and Upgrade to Premium */
 }
 
 .slla-premium-promotion h2 {
-    color: #FFFFFF;
-    margin-bottom: 20px; /* Increased margin below heading */
-}
-
-.slla-premium-promotion h2::before {
-    color: #FFFFFF;
+    color: #333333; /* Dark grey */
 }
 
 .slla-premium-promotion p {
-    font-size: 14px;
-    margin-bottom: 25px; /* Increased margin below paragraph */
-    color: #FFFFFF;
+    color: #666666; /* Medium grey */
 }
 
 .slla-premium-promotion .slla-upgrade-btn {
-    background: #FFFFFF;
-    color: #F5A623;
-    font-weight: 600;
+    background: #f5a623; /* Yellow */
+    color: #ffffff;
 }
 
-.slla-premium-promotion .slla-upgrade-btn:hover {
-    background: #F7F9FC;
-    color: #D89E1F;
+/* AI Insights Section */
+.slla-ai-insights {
+    background: #ffffff; /* White background */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    margin-top: 30px; /* Space above the card */
 }
 
-/* Settings Page Form Styling */
-.slla-settings .form-table th {
-    font-weight: 600; /* Bold labels */
-    color: #1D2327;
-    font-size: 14px;
-    padding: 15px 0; /* Increased padding for better spacing */
+.slla-ai-insights h2 {
+    color: #333333; /* Dark grey */
 }
 
-.slla-settings .form-table td {
-    padding: 15px 0; /* Increased padding for better spacing */
+.slla-ai-insights p {
+    color: #666666; /* Medium grey */
 }
 
-.slla-settings .form-table p {
-    font-size: 14px;
-    color: #666;
-    margin: 0 0 10px 0;
-}
-
-/* Input Field Styling */
-.slla-input {
-    width: 100%;
-    max-width: 200px;
-    padding: 10px;
-    border: 1px solid #D1D5DB;
-    border-radius: 5px;
-    font-size: 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.3s ease;
-}
-
-.slla-input:focus {
-    border-color: #0073AA;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+.slla-ai-insights ul li {
+    color: #333333; /* Dark grey */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .slla-grid {
         grid-template-columns: 1fr;
-        gap: 30px; /* Adjusted gap for mobile */
+        gap: 15px;
     }
 
     .slla-stats-grid {
         grid-template-columns: 1fr;
-        gap: 20px; /* Adjusted gap for mobile */
+        gap: 10px;
     }
 
     .slla-failed-attempts-circle {
-        width: 100px;
-        height: 100px;
-        font-size: 24px;
-        margin-bottom: 15px; /* Adjusted margin for mobile */
+        width: 80px;
+        height: 80px;
+        font-size: 22px;
     }
 
     .slla-dashboard-wrap {
-        padding: 20px; /* Reduced padding for mobile */
+        padding: 15px;
     }
 
     .slla-card {
-        margin-bottom: 15px; /* Adjusted margin for mobile */
+        padding: 15px;
     }
 
-    .slla-input {
-        max-width: 100%; /* Full width on mobile */
+    .slla-submenu {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .slla-submenu a {
+        margin: 5px;
+    }
+}
+
+/* Settings Page Grid Layout */
+.slla-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Individual Setting Item Styling */
+/* Individual Setting Item Styling (Updated for GDPR Compliance) */
+/* Individual Setting Item Styling (Updated for GDPR Compliance with Enhanced Hover Effect) */
+.slla-setting-item {
+    background: #ffffff; /* White background */
+    border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added border-color transition */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px; /* Adjusted height for less content */
+}
+
+/* Hover Effect for Setting Item */
+.slla-setting-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+    border-color: #f5a623; /* Yellow border on hover for visual feedback */
+}
+
+/* Specific Styling for GDPR Compliance Checkbox */
+.slla-setting-item label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333; /* Dark grey */
+    margin-bottom: 10px;
+}
+
+.slla-setting-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    accent-color: #f5a623; /* Yellow checkbox */
+}
+
+/* Description Text Below Checkbox */
+.slla-setting-item .description {
+    font-size: 12px;
+    color: #666666; /* Medium grey */
+    margin-top: 5px;
+    line-height: 1.4; /* Better readability */
+}
+
+/* Ensure GDPR Section Doesn't Look Empty */
+.slla-setting-item.gdpr-compliance {
+    padding: 15px 20px; /* Slightly less padding to fit content */
+    min-height: 100px; /* Adjusted height for less content */
+}
+
+/* Tooltip Styling */
+.slla-tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.slla-tooltip .dashicons-info-outline {
+    color: #f5a623; /* Yellow */
+    font-size: 16px;
+    cursor: help;
+}
+
+.slla-tooltip .slla-tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333333; /* Dark grey background */
+    color: #ffffff; /* White text */
+    text-align: center;
+    border-radius: 5px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 12px;
+}
+
+.slla-tooltip:hover .slla-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* IP Validation Error Styling */
+.slla-ip-error {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.slla-input-error {
+    border-color: #ff6f61 !important; /* Red border for invalid IPs */
+}
+
+/* Error Message Preview Styling */
+.slla-error-preview {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9; /* Very light grey background */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 5px;
+    font-size: 13px;
+    color: #333333; /* Dark grey */
+}
+
+.slla-error-preview strong {
+    color: #f5a623; /* Yellow */
+}
+
+/* Reset Button Styling */
+.slla-reset-btn {
+    display: inline-block;
+    padding: 12px 24px; /* Match other buttons */
+    background: #ff6f61; /* Red background for reset */
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-reset-btn:hover {
+    background: #e65a50; /* Darker red on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Adjust Submit Button Margin */
+.slla-submit-btn {
+    margin-top: 20px;
+    margin-right: 10px; /* Add spacing between buttons */
+}
+
+/* Logs Page Filter Form Styling */
+.slla-logs-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.slla-logs-filter-form label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333; /* Dark grey */
+}
+
+.slla-logs-filter-form select.slla-input {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333333; /* Dark grey */
+    background: #f9f9f9; /* Very light grey background */
+    transition: border-color 0.3s ease;
+    min-width: 150px;
+}
+
+.slla-logs-filter-form select.slla-input:focus {
+    border-color: #f5a623; /* Yellow on focus */
+    outline: none;
+}
+
+.slla-filter-btn {
+    background: #f5a623; /* Yellow background */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-filter-btn:hover {
+    background: #e69500; /* Darker yellow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.slla-filter-btn:disabled {
+    background: #cccccc; /* Grey background when disabled */
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Clear Logs Form Styling */
+.slla-clear-logs-form {
+    margin-bottom: 20px;
+}
+
+.slla-clear-btn {
+    background: #ff6f61; /* Red background for clear */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-clear-btn:hover {
+    background: #e65a50; /* Darker red on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Logs Table Styling */
+.slla-logs-table-wrap {
+    overflow-x: auto; /* Enable horizontal scrolling on small screens */
+}
+
+.slla-dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff; /* White background */
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    overflow: hidden; /* Ensure border-radius applies */
+}
+
+.slla-dashboard-table thead {
+    background: #f9f9f9; /* Very light grey background */
+}
+
+.slla-dashboard-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333; /* Dark grey */
+    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+}
+
+.slla-dashboard-table td {
+    padding: 12px 15px;
+    font-size: 13px;
+    color: #666666; /* Medium grey */
+    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+}
+
+/* Table Row Animation */
+.slla-log-row {
+    opacity: 0;
+    animation: fadeInRow 0.5s ease forwards;
+    animation-delay: calc(var(--row-delay) * 0.1s);
+}
+
+@keyframes fadeInRow {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slla-dashboard-table tbody tr:hover {
+    background: #fff5e0; /* Light yellow on hover */
+}
+
+/* Event Type Styling */
+.slla-event-type {
+    font-weight: 500;
+}
+
+.slla-event-type-successful_login {
+    color: #f5a623; /* Yellow for successful logins */
+}
+
+.slla-event-type-lockout {
+    color: #ff6f61; /* Red for lockouts */
+}
+
+.slla-event-type-failed_attempt {
+    color: #f5a623; /* Yellow for failed attempts */
+}
+
+/* Back to Top Button Styling */
+.slla-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #f5a623; /* Yellow background */
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: none;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+}
+
+.slla-back-to-top:hover {
+    background: #e69500; /* Darker yellow on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Premium Page Styling */
+.slla-premium-header {
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.slla-premium-header h2 {
+    color: #333333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.slla-premium-header p {
+    color: #666666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.slla-premium-activation-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.slla-premium-activation-form input[type="text"] {
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333333;
+    background: #f9f9f9; /* Very light grey background */
+    width: 250px;
+}
+
+.slla-premium-activation-form input[type="text"]:focus {
+    border-color: #f5a623; /* Yellow on focus */
+    outline: none;
+}
+
+.slla-premium-header .description {
+    font-size: 12px;
+    color: #666666;
+}
+
+/* Why Upgrade Section */
+.slla-premium-why-upgrade {
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.slla-premium-why-upgrade h2 {
+    color: #333333;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.slla-premium-why-upgrade p {
+    color: #666666;
+    font-size: 14px;
+}
+
+/* Features Comparison Table */
+.slla-premium-features {
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.slla-premium-features h2 {
+    color: #333333;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.slla-premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slla-premium-table thead {
+    background: #f9f9f9; /* Very light grey background */
+}
+
+.slla-premium-table th,
+.slla-premium-table td {
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+}
+
+.slla-premium-table th {
+    font-weight: 600;
+}
+
+.slla-premium-table td:first-child {
+    text-align: left;
+}
+
+.slla-premium-table .description {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 5px;
+}
+
+.slla-check {
+    color: #f5a623; /* Yellow */
+    font-size: 18px;
+}
+
+.slla-cross {
+    color: #ff6f61; /* Red */
+    font-size: 18px;
+}
+
+.slla-installed-btn {
+    background: #cccccc;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: not-allowed;
+}
+
+/* Premium Highlights */
+.slla-premium-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.slla-highlight-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.slla-highlight-card:hover {
+    transform: translateY(-5px);
+}
+
+.slla-highlight-card .dashicons {
+    font-size: 40px;
+    color: #f5a623; /* Yellow */
+    margin-bottom: 15px;
+}
+
+.slla-highlight-card h3 {
+    color: #333333;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.slla-highlight-card p {
+    color: #666666;
+    font-size: 13px;
+}
+
+/* Premium Footer on Settings Page */
+.slla-premium-footer {
+    background: #ffffff;
+    border: 1px solid #e0e0e0; /* Light grey border */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.slla-premium-footer h3 {
+    color: #333333;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.slla-premium-footer .slla-upgrade-btn {
+    background: #f5a623;
+    color: #ffffff;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .slla-dashboard-table th,
+    .slla-dashboard-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .slla-logs-filter-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .slla-logs-filter-form label,
+    .slla-logs-filter-form select.slla-input,
+    .slla-filter-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .slla-clear-logs-form {
+        width: 100%;
+    }
+
+    .slla-clear-btn {
+        width: 100%;
+    }
+
+    .slla-back-to-top {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    /* Premium Page Responsive */
+    .slla-premium-activation-form {
+        flex-direction: column;
+    }
+
+    .slla-premium-activation-form input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .slla-premium-table th,
+    .slla-premium-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .slla-premium-table td:first-child {
+        font-size: 12px;
+    }
+
+    .slla-premium-table .description {
+        font-size: 10px;
     }
 }
