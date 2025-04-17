@@ -1,0 +1,16 @@
+{
+    "name": "vendor/simple-limit-login-attempts",
+    "description": "it is a security type login plugin",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Muhammad Sheraz Khilji",
+            "email": "sananjani104@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "twilio/sdk": "^8.5"
+    }
+}

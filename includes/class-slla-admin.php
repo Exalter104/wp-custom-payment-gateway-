@@ -9,6 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SLLA_Admin {
     /**
+     * Constructor.
+     */
+    public function __construct() {
+        $this->init();
+        // Add AJAX action for Twilio credentials validation
+        add_action( 'wp_ajax_slla_validate_twilio_credentials', array( $this, 'validate_twilio_credentials' ) );
+    }
+
+    /**
      * Initialize admin functionality.
      */
     public function init() {
@@ -18,8 +27,7 @@ class SLLA_Admin {
         // Add AJAX action for real-time notifications
         add_action( 'wp_ajax_slla_get_recent_failed_attempts', array( $this, 'ajax_get_recent_failed_attempts' ) );
     }
-
-    /**
+/**
      * Add admin menu pages.
      */
     public function add_admin_menu() {
@@ -68,6 +76,7 @@ class SLLA_Admin {
             'slla-tools',
             array( $this, 'render_tools_page' )
         );
+
         add_submenu_page(
             'slla-dashboard',
             __( 'Notifications', 'simple-limit-login-attempts' ),
@@ -87,6 +96,12 @@ class SLLA_Admin {
         );
     }
 
+  /**
+     * Render the notifications page.
+     */
+    public function render_notifications_page() {
+        require_once SLLA_PLUGIN_DIR . 'templates/notifications.php';
+    }
     /**
      * Register settings for the plugin.
      */
@@ -115,6 +130,24 @@ class SLLA_Admin {
         register_setting( 'slla_settings_group', 'slla_gdpr_compliance', array(
             'default' => 0,
             'sanitize_callback' => 'absint'
+        ));
+
+        register_setting( 'slla_notifications_group', 'slla_twilio_account_sid', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => '',
+        ));
+
+        register_setting( 'slla_notifications_group', 'slla_twilio_auth_token', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => '',
+        ));
+
+        register_setting( 'slla_notifications_group', 'slla_twilio_phone_number', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => '',
         ));
 
         add_settings_section(
@@ -705,8 +738,14 @@ class SLLA_Admin {
      */
     private function send_sms_notification( $username, $ip, $time ) {
         $phone_number = get_option( 'slla_admin_phone_number', '' );
-        if ( empty( $phone_number ) ) {
-            return; // No phone number provided
+        $account_sid = get_option( 'slla_twilio_account_sid', '' );
+        $auth_token = get_option( 'slla_twilio_auth_token', '' );
+        $twilio_phone_number = get_option( 'slla_twilio_phone_number', '' );
+
+        // Check if all required Twilio settings are provided
+        if ( empty( $phone_number ) || empty( $account_sid ) || empty( $auth_token ) || empty( $twilio_phone_number ) ) {
+            error_log( 'SMS Notification Failed: Missing Twilio credentials or admin phone number.' );
+            return;
         }
 
         $message = sprintf(
@@ -716,25 +755,24 @@ class SLLA_Admin {
             $time
         );
 
-        // Placeholder for SMS API integration (e.g., Twilio)
-        // For now, we'll log the message to show it would be sent
-        error_log( "SMS Notification: To: $phone_number, Message: $message" );
+        try {
+            // Include Twilio PHP Library
+            require_once SLLA_PLUGIN_DIR . 'vendor/autoload.php';
 
-        // Example with Twilio (commented out, requires Twilio PHP library and credentials)
-        /*
-        require_once 'path/to/Twilio/autoload.php';
-        $sid = 'your_twilio_account_sid';
-        $token = 'your_twilio_auth_token';
-        $client = new Twilio\Rest\Client( $sid, $token );
+            $client = new Twilio\Rest\Client( $account_sid, $auth_token );
 
-        $client->messages->create(
-            $phone_number,
-            array(
-                'from' => 'your_twilio_phone_number',
-                'body' => $message,
-            )
-        );
-        */
+            $client->messages->create(
+                $phone_number,
+                array(
+                    'from' => $twilio_phone_number,
+                    'body' => $message,
+                )
+            );
+
+            error_log( "SMS Notification Sent: To: $phone_number, Message: $message" );
+        } catch ( Exception $e ) {
+            error_log( "SMS Notification Failed: " . $e->getMessage() );
+        }
     }
 
     /**
@@ -766,5 +804,40 @@ class SLLA_Admin {
         }
 
         wp_send_json_success( array( 'html' => $html ) );
+    }
+
+    /**
+     * Validate Twilio credentials via AJAX.
+     */
+    public function validate_twilio_credentials() {
+        check_ajax_referer( 'slla_validate_twilio_nonce', 'nonce' );
+
+        $account_sid = isset( $_POST['account_sid'] ) ? sanitize_text_field( $_POST['account_sid'] ) : '';
+        $auth_token = isset( $_POST['auth_token'] ) ? sanitize_text_field( $_POST['auth_token'] ) : '';
+        $phone_number = isset( $_POST['phone_number'] ) ? sanitize_text_field( $_POST['phone_number'] ) : '';
+
+        if ( empty( $account_sid ) || empty( $auth_token ) || empty( $phone_number ) ) {
+            wp_send_json_error( array( 'message' => __( 'Please fill in all Twilio credentials.', 'simple-limit-login-attempts' ) ) );
+        }
+
+        try {
+            require_once SLLA_PLUGIN_DIR . 'vendor/autoload.php';
+
+            $client = new Twilio\Rest\Client( $account_sid, $auth_token );
+
+            // Test the credentials by fetching account details
+            $client->account->fetch();
+
+            // Validate the phone number by checking if it's a valid Twilio number
+            $phone = $client->lookups->v1->phoneNumbers( $phone_number )->fetch();
+
+            if ( $phone ) {
+                wp_send_json_success();
+            } else {
+                wp_send_json_error( array( 'message' => __( 'Invalid Twilio phone number.', 'simple-limit-login-attempts' ) ) );
+            }
+        } catch ( Exception $e ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid Twilio credentials.', 'simple-limit-login-attempts' ) ) );
+        }
     }
 }

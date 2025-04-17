@@ -17,17 +17,17 @@ class SLLA_Lockout {
         $lockout_key = 'slla_lockout_' . md5( $ip );
         $max_attempts = get_option( 'slla_max_attempts', 5 ); // Use setting
         $lockout_duration = get_option( 'slla_lockout_duration', 15 ) * MINUTE_IN_SECONDS; // Use setting
-
+    
         // Debugging: Log the IP and transient keys
         error_log( "Checking lockout for IP: $ip" );
         error_log( "Attempts transient key: $transient_key" );
         error_log( "Lockout transient key: $lockout_key" );
-
+    
         $attempts = get_transient( $transient_key );
-
+    
         // Debugging: Log the current attempts
         error_log( "Current attempts for IP $ip: " . ( $attempts !== false ? $attempts : 0 ) );
-
+    
         if ( $attempts && $attempts >= $max_attempts ) {
             // Set the lockout transient with start time, duration, and actual IP
             $lockout_data = array(
@@ -36,7 +36,7 @@ class SLLA_Lockout {
                 'ip' => $ip, // Store the actual IP address
             );
             $result = set_transient( $lockout_key, $lockout_data, $lockout_duration );
-
+    
             // Debugging: Log if transient was set successfully
             if ( $result ) {
                 error_log( "Lockout transient set for IP $ip: Success" );
@@ -46,16 +46,20 @@ class SLLA_Lockout {
                 error_log( "Database error (if any): " . $wpdb->last_error );
             }
             error_log( "Lockout data: " . print_r( $lockout_data, true ) );
-
+    
             $this->logger->log_lockout_event( $ip, 'Too many failed attempts' );
             delete_transient( $transient_key );
-
+    
+            // Call lockout_user to send SMS
+            $username = isset( $_POST['log'] ) ? sanitize_text_field( $_POST['log'] ) : 'Unknown';
+            $this->lockout_user( $username, $ip );
+    
             // Send email notification to admin
             $this->send_lockout_notification( $ip );
-
+    
             return true;
         }
-
+    
         return false;
     }
 
@@ -78,6 +82,36 @@ class SLLA_Lockout {
 
         return $user;
     }
+   
+    public function lockout_user( $username, $ip_address ) {
+        $lockout_key = 'slla_lockout_' . md5( $ip_address );
+        $lockout_duration = get_option( 'slla_lockout_duration', 15 ) * MINUTE_IN_SECONDS;
+    
+        // Use transient instead of update_option for consistency
+        $lockout_data = array(
+            'start_time' => time(),
+            'duration' => $lockout_duration,
+            'ip' => $ip_address,
+        );
+        set_transient( $lockout_key, $lockout_data, $lockout_duration );
+    
+        // SMS notification bhejo
+        if ( get_option( 'slla_enable_sms_notifications', 0 ) == 1 ) {
+            $message = sprintf(
+                __( 'User %s has been locked out due to too many failed attempts from IP %s on %s', 'simple-limit-login-attempts' ),
+                $username,
+                $ip_address,
+                home_url()
+            );
+            $result = slla_send_sms_notification( $message );
+            if ( $result ) {
+                error_log( "SMS notification sent for lockout of user $username from IP $ip_address" );
+            } else {
+                error_log( "Failed to send SMS notification for lockout of user $username from IP $ip_address" );
+            }
+        }
+    }
+    
 
     public function send_lockout_notification( $ip ) {
         $to = get_option( 'admin_email' );
@@ -99,4 +133,5 @@ class SLLA_Lockout {
         // Debugging: Log the result of wp_mail
         error_log( "wp_mail result: " . ( $result ? 'Success' : 'Failed' ) );
     }
+    
 }

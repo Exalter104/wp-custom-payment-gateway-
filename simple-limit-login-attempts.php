@@ -6,8 +6,8 @@
  * Version: 1.0.0
  * Author: Exarth
  * Author URI: https://exarth.com
- * License: MIT
- * License URI: https://choosealicense.com/licenses/mit/
+* License: GPL-2.0-or-later
+* License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: simple-limit-login-attempts
  */
 
@@ -16,11 +16,95 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
+// Include Composer autoload file for Twilio SDK
+require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+
+use Twilio\Rest\Client;
+
+/**
+ * Get Twilio Client Instance
+ * @return Client|null
+ */
+function slla_get_twilio_client() {
+    $account_sid = get_option( 'slla_twilio_account_sid', '' );
+    $auth_token  = get_option( 'slla_twilio_auth_token', '' );
+
+    if ( empty( $account_sid ) || empty( $auth_token ) ) {
+        return null; // Credentials nahi hain, null return karo
+    }
+
+    try {
+        return new Client( $account_sid, $auth_token );
+    } catch ( Exception $e ) {
+        error_log( 'Twilio Client Initialization Error: ' . $e->getMessage() );
+        return null;
+    }
+}
+
+/**
+ * Send SMS Notification via Twilio
+ * @param string $message The message to send
+ * @return bool Whether the message was sent successfully
+ */
+function slla_send_sms_notification( $message ) {
+    $twilio_client = slla_get_twilio_client();
+    if ( ! $twilio_client ) {
+        error_log( 'Twilio Client not initialized. Cannot send SMS.' );
+        return false;
+    }
+
+    $twilio_phone = get_option( 'slla_twilio_phone_number', '' );
+    $admin_phone  = get_option( 'slla_admin_phone_number', '' );
+
+    if ( empty( $twilio_phone ) || empty( $admin_phone ) ) {
+        error_log( 'Twilio or Admin phone number missing. Cannot send SMS.' );
+        return false;
+    }
+
+    try {
+        $twilio_client->messages->create(
+            $admin_phone, // To number
+            [
+                'from' => $twilio_phone, // From number
+                'body' => $message,
+            ]
+        );
+        return true;
+    } catch ( Exception $e ) {
+        error_log( 'Twilio SMS Sending Error: ' . $e->getMessage() );
+        return false;
+    }
+}
+
+// Example: Failed login attempt pe SMS bhejo
+function slla_on_failed_login_attempt( $username ) {
+    if ( get_option( 'slla_enable_sms_notifications', 0 ) != 1 ) {
+        return; // SMS notifications disabled hain
+    }
+
+    $message = sprintf(
+        __( 'Failed login attempt by %s on %s', 'simple-limit-login-attempts' ),
+        $username,
+        home_url()
+    );
+
+    if ( ! slla_send_sms_notification( $message ) ) {
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error"><p>' . __( 'Failed to send SMS notification. Check Twilio settings.', 'simple-limit-login-attempts' ) . '</p></div>';
+        });
+    }
+}
+
+// Hook into WordPress login attempt
+add_action( 'wp_login_failed', function( $username ) {
+    slla_on_failed_login_attempt( $username );
+});
+
 // DEFINE CONSTANT
 define( 'SLLA_VERSION', '1.0.0' );
 define( 'SLLA_PLUGIN_ID', 'simple-limit-login-attempts' );
 define( 'SLLA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'SLLA_PLUGIN_URL', plugins_url( '', __FILE__ ) );
+define( 'SLLA_PLUGIN_URL', trailingslashit( plugins_url( '', __FILE__ ) ) );
 
 // INCLUDING FILES
 if ( file_exists( SLLA_PLUGIN_DIR . 'includes/class-slla-core.php' ) ) {
@@ -59,7 +143,18 @@ if ( file_exists( SLLA_PLUGIN_DIR . 'includes/helpers/class-slla-helpers.php' ) 
     error_log( 'Simple Limit Login Attempts: Helpers file missing.' );
 }
 
+if ( file_exists( SLLA_PLUGIN_DIR . 'includes/class-slla-core.php' ) ) {
+    require_once SLLA_PLUGIN_DIR . 'includes/class-slla-core.php';
+} else {
+    error_log( 'Simple Limit Login Attempts: Core file missing.' );
+    add_action( 'admin_notices', function() {
+        echo '<div class="notice notice-error"><p>' . __( 'Simple Limit Login Attempts: Core file is missing. Plugin functionality may be limited.', 'simple-limit-login-attempts' ) . '</p></div>';
+    });
+}
+
 // ENQUEUE ADMIN STYLES AND SCRIPTS
+$css_version = SLLA_VERSION;
+$js_version = SLLA_VERSION;
 function slla_enqueue_admin_styles() {
     // Load styles and scripts only on SLLA admin pages
     $screen = get_current_screen();
@@ -84,9 +179,27 @@ function slla_enqueue_admin_styles() {
     }
 }
 add_action( 'admin_enqueue_scripts', 'slla_enqueue_admin_styles' );
+add_action( 'wp_login_failed', function( $username ) {
+    $lockout = new SLLA_Lockout( new SLLA_Core() );
+    $ip = $_SERVER['REMOTE_ADDR'];
+    
+    // Increment failed attempts
+    $transient_key = 'slla_attempts_' . md5( $ip );
+    $attempts = get_transient( $transient_key );
+    if ( $attempts === false ) {
+        $attempts = 0;
+    }
+    set_transient( $transient_key, $attempts + 1, DAY_IN_SECONDS );
 
+    // Check and set lockout
+    $lockout->check_and_set_lockout( $ip );
+
+    // Send SMS for failed attempt
+    slla_on_failed_login_attempt( $username );
+});
 // INITIALIZE THE PLUGIN
 function slla_init() {
+    global $slla_core;
     $slla_core = new SLLA_Core();
 }
 add_action( 'plugins_loaded', 'slla_init' );
@@ -118,6 +231,11 @@ function slla_uninstall() {
     delete_option( 'slla_block_countries' );
     delete_option( 'slla_premium_activated' );
     delete_option( 'slla_plugin_activated_notice' );
+    delete_option( 'slla_twilio_account_sid' );
+    delete_option( 'slla_twilio_auth_token' );
+    delete_option( 'slla_twilio_phone_number' );
+    delete_option( 'slla_admin_phone_number' );
+    delete_option( 'slla_enable_sms_notifications' );
 }
 
 // CREATE CUSTOM DATABASE TABLE ON PLUGIN ACTIVATION

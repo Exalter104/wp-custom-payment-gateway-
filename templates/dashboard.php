@@ -90,34 +90,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         <!-- Sidebar (Right Column) -->
         <div class="slla-sidebar">
-            <!-- Real-Time Notifications Section -->
+            <!-- Real-Time Notifications -->
             <div class="slla-card slla-real-time-notifications">
                 <h2><?php _e( 'Real-Time Notifications', 'simple-limit-login-attempts' ); ?></h2>
-                <?php if ( $this->is_premium_active() ) : ?>
-                <form method="post" action="options.php">
-                    <?php settings_fields( 'slla_notifications_group' ); ?>
-                    <ul>
-                        <li>
-                            <input type="checkbox" name="slla_enable_email_notifications" value="1"
-                                <?php checked( 1, get_option( 'slla_enable_email_notifications', 0 ) ); ?>>
-                            <label><?php _e( 'Enable Email Notifications', 'simple-limit-login-attempts' ); ?></label>
-                        </li>
-                        <li>
-                            <input type="checkbox" name="slla_enable_sms_notifications" value="1"
-                                <?php checked( 1, get_option( 'slla_enable_sms_notifications', 0 ) ); ?>>
-                            <label><?php _e( 'Enable SMS Notifications', 'simple-limit-login-attempts' ); ?></label>
-                        </li>
-                        <li>
-                            <label><?php _e( 'Admin Phone Number for SMS', 'simple-limit-login-attempts' ); ?></label>
-                            <input type="text" name="slla_admin_phone_number"
-                                value="<?php echo esc_attr( get_option( 'slla_admin_phone_number', '' ) ); ?>"
-                                placeholder="+1234567890">
-                        </li>
-                    </ul>
-                    <?php submit_button( __( 'Save Notification Settings', 'simple-limit-login-attempts' ), 'primary slla-submit-btn', 'submit', false ); ?>
-                </form>
-                <?php endif; ?>
-
                 <?php
                 $recent_attempts = $this->get_recent_failed_attempts( 5 );
                 if ( empty( $recent_attempts ) ) {
@@ -129,16 +104,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <ul class="slla-notification-list">
                     <?php foreach ( $recent_attempts as $index => $attempt ) : ?>
                     <li class="slla-notification-card">
-                        <!-- Row 1: IP and Username -->
                         <div class="slla-notification-row">
                             <span
                                 class="slla-notification-message"><?php _e( 'Failed Attempt', 'simple-limit-login-attempts' ); ?></span>
                             <span
                                 class="slla-notification-username"><?php echo esc_html( $attempt->username ); ?></span>
                             <span class="slla-notification-ip"><?php echo esc_html( 'IP: ' . $attempt->ip ); ?></span>
-                        </div>
-                        <!-- Row 2: Date and Time -->
-                        <div class="slla-notification-row">
                             <span class="slla-notification-time"><?php echo esc_html( $attempt->time ); ?></span>
                         </div>
                     </li>
@@ -161,4 +132,6 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>

@@ -348,8 +348,121 @@
     margin-bottom: 20px;
     max-height: 550px;
     overflow-y: auto;
+    width: 100%; /* Full width to match screenshot */
 }
 
+/* Real-Time Notifications Form Styling */
+.slla-real-time-notifications ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.slla-real-time-notifications li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center; /* Align items center for checkboxes and inputs */
+    gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.slla-real-time-notifications label {
+    font-size: 14px;
+    color: #333333; /* Dark grey */
+    flex: 0 0 200px; /* Fixed width for labels to align inputs */
+    font-weight: 500;
+}
+
+/* Checkbox Styling */
+.slla-real-time-notifications input[type="checkbox"] {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    accent-color: #f5a623; /* Yellow checkbox */
+}
+
+/* Checkbox Label Alignment */
+.slla-real-time-notifications li:has(input[type="checkbox"]) label {
+    flex: none; /* Remove fixed width for checkbox labels */
+    display: flex;
+    align-items: center;
+}
+
+/* Text Input Styling */
+.slla-real-time-notifications input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333333;
+    background: #f9f9f9;
+    flex: 1; /* Take remaining space */
+    min-width: 300px; /* Ensure input doesn't shrink too much */
+    transition: border-color 0.3s ease;
+}
+
+.slla-real-time-notifications input[type="text"]:focus {
+    border-color: #f5a623;
+    outline: none;
+}
+
+/* Error Message Styling */
+.slla-error-message {
+    font-size: 12px;
+    color: #ff6f61;
+    margin-top: 4px;
+    flex: 0 0 100%; /* Ensure error message takes full width below input */
+    padding-left: 210px; /* Align with input by accounting for label width */
+}
+
+.slla-input-error {
+    border-color: #ff6f61 !important;
+}
+
+/* Align the Save Notification Settings Button to the Right */
+.slla-real-time-notifications .slla-submit-btn {
+    display: block;
+    margin: 0 0 0 auto; /* Align to the right */
+    background-color: #007cba; /* Blue color as per screenshot */
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slla-real-time-notifications .slla-submit-btn:hover {
+    background-color: #006ba1; /* Darker blue on hover */
+}
+
+/* Responsive Adjustments for Notification Form */
+@media (max-width: 768px) {
+    .slla-real-time-notifications li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .slla-real-time-notifications label {
+        flex: 0 0 100%; /* Full width on mobile */
+    }
+
+    .slla-real-time-notifications input[type="text"] {
+        min-width: 100%; /* Full width on mobile */
+    }
+
+    .slla-real-time-notifications .slla-error-message {
+        padding-left: 0; /* Reset padding on mobile */
+    }
+
+    .slla-real-time-notifications .slla-submit-btn {
+        width: 100%; /* Full width on mobile */
+    }
+}
+
+/* Sidebar Real-Time Notifications List (Not Relevant to Form but Keeping for Completeness) */
 .slla-notification-list {
     list-style: none;
     padding: 0;
@@ -369,7 +482,6 @@
     background: #fff5e0;
 }
 
-/* Sidebar Real-Time Notifications Section */
 .slla-notification-row {
     display: flex;
     justify-content: space-between;
@@ -403,7 +515,7 @@
     white-space: nowrap;
 }
 
-/* Responsive Design */
+/* Responsive Design for Notification List */
 @media (max-width: 768px) {
     .slla-notification-row {
         flex-direction: column;
@@ -989,6 +1101,7 @@
 .slla-highlight-card p {
     color: #666666;
     font-size: 13px;
+    line-height: 1.5;
 }
 
 /* Premium Footer on Settings Page */
@@ -1069,75 +1182,5 @@
 
     .slla-premium-table .description {
         font-size: 10px;
-    }
-}
-
-/* Real-Time Notifications Form Styling */
-.slla-real-time-notifications ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 25px;
-}
-
-.slla-real-time-notifications li {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-}
-
-.slla-real-time-notifications li:hover {
-    background: #fff5e0; /* Light yellow on hover */
-}
-
-.slla-real-time-notifications input[type="checkbox"] {
-    margin-right: 12px;
-    width: 16px;
-    height: 16px;
-    accent-color: #f5a623; /* Yellow checkbox */
-}
-
-.slla-real-time-notifications input[type="text"] {
-    padding: 8px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333333;
-    background: #f9f9f9;
-    width: 100%;
-    transition: border-color 0.3s ease;
-}
-
-.slla-real-time-notifications input[type="text"]:focus {
-    border-color: #f5a623;
-    outline: none;
-}
-
-.slla-real-time-notifications label {
-    font-size: 14px;
-    color: #333333; /* Dark grey */
-}
-
-/* Center the Save Notification Settings Button */
-.slla-real-time-notifications .slla-submit-btn {
-    display: block;
-    margin: 0 auto; /* Center the button */
-}
-
-/* Responsive Adjustments for Notification Form */
-@media (max-width: 768px) {
-    .slla-real-time-notifications li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .slla-real-time-notifications input[type="checkbox"] {
-        margin-bottom: 10px;
-    }
-
-    .slla-real-time-notifications input[type="text"] {
-        width: 100%;
     }
 }
