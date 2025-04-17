@@ -15,6 +15,8 @@ class SLLA_Admin {
         add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
         add_action( 'admin_notices', array( $this, 'display_attempts' ) );
         add_action( 'admin_init', array( $this, 'register_settings' ) );
+        // Add AJAX action for real-time notifications
+        add_action( 'wp_ajax_slla_get_recent_failed_attempts', array( $this, 'ajax_get_recent_failed_attempts' ) );
     }
 
     /**
@@ -65,6 +67,14 @@ class SLLA_Admin {
             'manage_options',
             'slla-tools',
             array( $this, 'render_tools_page' )
+        );
+        add_submenu_page(
+            'slla-dashboard',
+            __( 'Notifications', 'simple-limit-login-attempts' ),
+            __( 'Notifications', 'simple-limit-login-attempts' ),
+            'manage_options',
+            'slla-notifications',
+            array( $this, 'render_notifications_page' )
         );
 
         add_submenu_page(
@@ -197,6 +207,25 @@ class SLLA_Admin {
             'slla-premium-settings',
             'slla_premium_settings'
         );
+
+        // New Settings for Email and SMS Notifications
+        register_setting( 'slla_notifications_group', 'slla_enable_email_notifications', array(
+            'type'              => 'integer',
+            'sanitize_callback' => 'absint',
+            'default'           => 0,
+        ));
+
+        register_setting( 'slla_notifications_group', 'slla_enable_sms_notifications', array(
+            'type'              => 'integer',
+            'sanitize_callback' => 'absint',
+            'default'           => 0,
+        ));
+
+        register_setting( 'slla_notifications_group', 'slla_admin_phone_number', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => '',
+        ));
     }
 
     /**
@@ -579,5 +608,163 @@ class SLLA_Admin {
 </div>
 <?php
         }
+    }
+
+    /**
+     * Get recent failed login attempts for real-time notifications.
+     *
+     * @param int $limit Number of recent attempts to fetch.
+     * @return array List of recent failed attempts.
+     */
+    public function get_recent_failed_attempts( $limit = 5 ) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'slla_logs';
+        $query = $wpdb->prepare(
+            "SELECT * FROM $table_name WHERE type = %s ORDER BY time DESC LIMIT %d",
+            'failed_attempt',
+            $limit
+        );
+        return $wpdb->get_results( $query );
+    }
+
+    /**
+     * Log a failed login attempt and send notifications if enabled.
+     *
+     * @param string $username The username attempting to log in.
+     * @param string $ip The IP address of the user.
+     */
+    public function log_failed_attempt( $username, $ip ) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'slla_logs';
+        $time = current_time( 'mysql' );
+
+        // Insert the failed attempt into the logs
+        $wpdb->insert(
+            $table_name,
+            array(
+                'username' => $username,
+                'ip'       => $ip,
+                'time'     => $time,
+                'type'     => 'failed_attempt',
+                'reason'   => __( 'Invalid credentials', 'simple-limit-login-attempts' ),
+            ),
+            array( '%s', '%s', '%s', '%s', '%s' )
+        );
+
+        // Send notifications if premium user and notifications are enabled
+        if ( $this->is_premium_active() ) {
+            $this->send_notifications( $username, $ip, $time );
+        }
+    }
+
+    /**
+     * Send email and SMS notifications for a failed login attempt.
+     *
+     * @param string $username The username attempting to log in.
+     * @param string $ip The IP address of the user.
+     * @param string $time The timestamp of the attempt.
+     */
+    private function send_notifications( $username, $ip, $time ) {
+        // Check if email notifications are enabled
+        if ( get_option( 'slla_enable_email_notifications', 0 ) ) {
+            $this->send_email_notification( $username, $ip, $time );
+        }
+
+        // Check if SMS notifications are enabled
+        if ( get_option( 'slla_enable_sms_notifications', 0 ) ) {
+            $this->send_sms_notification( $username, $ip, $time );
+        }
+    }
+
+    /**
+     * Send an email notification for a failed login attempt.
+     *
+     * @param string $username The username attempting to log in.
+     * @param string $ip The IP address of the user.
+     * @param string $time The timestamp of the attempt.
+     */
+    private function send_email_notification( $username, $ip, $time ) {
+        $admin_email = get_option( 'admin_email' );
+        $subject = __( 'Failed Login Attempt Notification', 'simple-limit-login-attempts' );
+        $message = sprintf(
+            __( "A failed login attempt was detected:\n\nUsername: %s\nIP: %s\nTime: %s", 'simple-limit-login-attempts' ),
+            $username,
+            $ip,
+            $time
+        );
+
+        wp_mail( $admin_email, $subject, $message );
+    }
+
+    /**
+     * Send an SMS notification for a failed login attempt.
+     *
+     * @param string $username The username attempting to log in.
+     * @param string $ip The IP address of the user.
+     * @param string $time The timestamp of the attempt.
+     */
+    private function send_sms_notification( $username, $ip, $time ) {
+        $phone_number = get_option( 'slla_admin_phone_number', '' );
+        if ( empty( $phone_number ) ) {
+            return; // No phone number provided
+        }
+
+        $message = sprintf(
+            __( 'Failed login attempt detected: Username: %s, IP: %s, Time: %s', 'simple-limit-login-attempts' ),
+            $username,
+            $ip,
+            $time
+        );
+
+        // Placeholder for SMS API integration (e.g., Twilio)
+        // For now, we'll log the message to show it would be sent
+        error_log( "SMS Notification: To: $phone_number, Message: $message" );
+
+        // Example with Twilio (commented out, requires Twilio PHP library and credentials)
+        /*
+        require_once 'path/to/Twilio/autoload.php';
+        $sid = 'your_twilio_account_sid';
+        $token = 'your_twilio_auth_token';
+        $client = new Twilio\Rest\Client( $sid, $token );
+
+        $client->messages->create(
+            $phone_number,
+            array(
+                'from' => 'your_twilio_phone_number',
+                'body' => $message,
+            )
+        );
+        */
+    }
+
+    /**
+     * AJAX handler to fetch recent failed attempts.
+     */
+    public function ajax_get_recent_failed_attempts() {
+        check_ajax_referer( 'slla_admin_nonce', 'nonce' );
+
+        $recent_attempts = $this->get_recent_failed_attempts( 5 );
+        $html = '';
+
+        if ( empty( $recent_attempts ) ) {
+            $html = '<p>' . __( 'No recent failed login attempts.', 'simple-limit-login-attempts' ) . '</p>';
+        } else {
+            $html .= '<ul class="slla-notification-list">';
+            foreach ( $recent_attempts as $index => $attempt ) {
+                $html .= '<li class="slla-notification-card">';
+                $html .= '<div class="slla-notification-row">';
+                $html .= '<span class="slla-notification-message">' . __( 'Failed Attempt', 'simple-limit-login-attempts' ) . '</span>';
+                $html .= '<span class="slla-notification-username">' . esc_html( $attempt->username ) . '</span>';
+                $html .= '</div>';
+                $html .= '<div class="slla-notification-row">';
+                $html .= '<span class="slla-notification-ip">' . esc_html( 'IP: ' . $attempt->ip ) . '</span>';
+                $html .= '<span class="slla-notification-time">' . esc_html( $attempt->time ) . '</span>';
+                $html .= '</div>';
+                $html .= '</li>';
+            }
+            $html .= '</ul>';
+        }
+
+        wp_send_json_success( array( 'html' => $html ) );
     }
 }

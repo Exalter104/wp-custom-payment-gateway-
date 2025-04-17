@@ -47,6 +47,32 @@
     background: #fff5e0; /* Light yellow background on hover/active */
 }
 
+/* Two-Column Layout */
+.slla-dashboard-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.slla-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Sidebar (Right Column) */
+.slla-sidebar {
+    width: 400px;
+    min-width: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slla-sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
 /* Grid Layout */
 .slla-grid {
     display: grid;
@@ -121,12 +147,13 @@
 .slla-logs h2::before { content: "\f321"; color: #f5a623; } /* Yellow */
 .slla-tools h2::before { content: "\f309"; color: #f5a623; } /* Yellow */
 .slla-ai-insights h2::before { content: "\f101"; color: #f5a623; } /* Yellow for AI Insights */
+.slla-real-time-notifications h2::before { content: "\f227"; color: #f5a623; } /* Yellow for Real-Time Notifications */
 
 /* Quick Stats Styling */
 .slla-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 25px; /* Spacing between stats cards (already adjusted) */
+    gap: 25px; /* Spacing between stats cards */
 }
 
 .slla-stat {
@@ -177,9 +204,9 @@
     transform: scale(1.05);
 }
 
-.slla-failed-attempts-low { background: #207532; } /* Green for low attempts (keeping for contrast) */
+.slla-failed-attempts-low { background: #207532; } /* Green for low attempts */
 .slla-failed-attempts-medium { background: #f5a623; } /* Yellow for medium attempts */
-.slla-failed-attempts-high { background: #ff6f61; } /* Red for high attempts (keeping for contrast) */
+.slla-failed-attempts-high { background: #ff6f61; } /* Red for high attempts */
 
 /* Failed Attempts Section */
 .slla-failed-attempts {
@@ -231,13 +258,13 @@
 
 /* Security Checklist Styling */
 .slla-security-checklist {
-    margin-top: 30px; /* Space above the card (already added) */
+    margin-top: 30px; /* Space above the card */
 }
 
 .slla-security-checklist ul {
     list-style: none;
     padding: 0;
-    margin-bottom: 25px; /* Space between checkboxes and button (already added) */
+    margin-bottom: 25px; /* Space between checkboxes and button */
 }
 
 .slla-security-checklist li {
@@ -311,8 +338,117 @@
     color: #333333; /* Dark grey */
 }
 
+/* Sidebar Real-Time Notifications Section */
+.slla-real-time-notifications {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.slla-notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slla-notification-card {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    transition: background 0.3s ease;
+}
+
+.slla-notification-card:hover {
+    background: #fff5e0;
+}
+
+/* Sidebar Real-Time Notifications Section */
+.slla-notification-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    flex-wrap: wrap; /* Allow wrapping for better spacing */
+}
+
+.slla-notification-message {
+    font-size: 14px;
+    color: #333333;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.slla-notification-username {
+    font-size: 14px;
+    color: #f5a623;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.slla-notification-ip {
+    font-size: 12px;
+    color: #666666;
+}
+
+.slla-notification-time {
+    font-size: 12px;
+    color: #666666;
+    white-space: nowrap;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+    .slla-notification-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .slla-notification-time,
+    .slla-notification-ip {
+        text-align: left;
+    }
+}
+
+.slla-premium-notice {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.slla-premium-notice .slla-upgrade-btn {
+    margin-left: 10px;
+    background-color: #f5a623;
+    color: #fff;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.slla-premium-notice .slla-upgrade-btn:hover {
+    background-color: #e69500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slla-dashboard-container {
+        flex-direction: column;
+    }
+
+    .slla-main-content,
+    .slla-sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+
     .slla-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -345,6 +481,17 @@
     .slla-submenu a {
         margin: 5px;
     }
+
+    .slla-notification-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .slla-notification-time,
+    .slla-notification-ip {
+        text-align: left;
+    }
 }
 
 /* Settings Page Grid Layout */
@@ -356,26 +503,24 @@
 }
 
 /* Individual Setting Item Styling */
-/* Individual Setting Item Styling (Updated for GDPR Compliance) */
-/* Individual Setting Item Styling (Updated for GDPR Compliance with Enhanced Hover Effect) */
 .slla-setting-item {
     background: #ffffff; /* White background */
     border-radius: 8px;
     border: 1px solid #e0e0e0; /* Light grey border */
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Subtle shadow */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added border-color transition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 120px; /* Adjusted height for less content */
+    min-height: 120px;
 }
 
 /* Hover Effect for Setting Item */
 .slla-setting-item:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
-    border-color: #f5a623; /* Yellow border on hover for visual feedback */
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: #f5a623;
 }
 
 /* Specific Styling for GDPR Compliance Checkbox */
@@ -384,7 +529,7 @@
     align-items: center;
     font-size: 14px;
     font-weight: 600;
-    color: #333333; /* Dark grey */
+    color: #333333;
     margin-bottom: 10px;
 }
 
@@ -392,21 +537,21 @@
     margin-right: 12px;
     width: 16px;
     height: 16px;
-    accent-color: #f5a623; /* Yellow checkbox */
+    accent-color: #f5a623;
 }
 
 /* Description Text Below Checkbox */
 .slla-setting-item .description {
     font-size: 12px;
-    color: #666666; /* Medium grey */
+    color: #666666;
     margin-top: 5px;
-    line-height: 1.4; /* Better readability */
+    line-height: 1.4;
 }
 
 /* Ensure GDPR Section Doesn't Look Empty */
 .slla-setting-item.gdpr-compliance {
-    padding: 15px 20px; /* Slightly less padding to fit content */
-    min-height: 100px; /* Adjusted height for less content */
+    padding: 15px 20px;
+    min-height: 100px;
 }
 
 /* Tooltip Styling */
@@ -417,7 +562,7 @@
 }
 
 .slla-tooltip .dashicons-info-outline {
-    color: #f5a623; /* Yellow */
+    color: #f5a623;
     font-size: 16px;
     cursor: help;
 }
@@ -425,14 +570,14 @@
 .slla-tooltip .slla-tooltip-text {
     visibility: hidden;
     width: 200px;
-    background-color: #333333; /* Dark grey background */
-    color: #ffffff; /* White text */
+    background-color: #333333;
+    color: #ffffff;
     text-align: center;
     border-radius: 5px;
     padding: 8px;
     position: absolute;
     z-index: 1;
-    bottom: 125%; /* Position above the icon */
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -452,29 +597,29 @@
 }
 
 .slla-input-error {
-    border-color: #ff6f61 !important; /* Red border for invalid IPs */
+    border-color: #ff6f61 !important;
 }
 
 /* Error Message Preview Styling */
 .slla-error-preview {
     margin-top: 10px;
     padding: 10px;
-    background: #f9f9f9; /* Very light grey background */
-    border: 1px solid #e0e0e0; /* Light grey border */
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     font-size: 13px;
-    color: #333333; /* Dark grey */
+    color: #333333;
 }
 
 .slla-error-preview strong {
-    color: #f5a623; /* Yellow */
+    color: #f5a623;
 }
 
 /* Reset Button Styling */
 .slla-reset-btn {
     display: inline-block;
-    padding: 12px 24px; /* Match other buttons */
-    background: #ff6f61; /* Red background for reset */
+    padding: 12px 24px;
+    background: #ff6f61;
     color: #ffffff;
     text-decoration: none;
     border-radius: 6px;
@@ -486,7 +631,7 @@
 }
 
 .slla-reset-btn:hover {
-    background: #e65a50; /* Darker red on hover */
+    background: #e65a50;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
@@ -494,7 +639,7 @@
 /* Adjust Submit Button Margin */
 .slla-submit-btn {
     margin-top: 20px;
-    margin-right: 10px; /* Add spacing between buttons */
+    margin-right: 10px;
 }
 
 /* Logs Page Filter Form Styling */
@@ -509,27 +654,27 @@
 .slla-logs-filter-form label {
     font-size: 14px;
     font-weight: 500;
-    color: #333333; /* Dark grey */
+    color: #333333;
 }
 
 .slla-logs-filter-form select.slla-input {
     padding: 8px 12px;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     font-size: 14px;
-    color: #333333; /* Dark grey */
-    background: #f9f9f9; /* Very light grey background */
+    color: #333333;
+    background: #f9f9f9;
     transition: border-color 0.3s ease;
     min-width: 150px;
 }
 
 .slla-logs-filter-form select.slla-input:focus {
-    border-color: #f5a623; /* Yellow on focus */
+    border-color: #f5a623;
     outline: none;
 }
 
 .slla-filter-btn {
-    background: #f5a623; /* Yellow background */
+    background: #f5a623;
     color: #ffffff;
     padding: 8px 16px;
     border-radius: 6px;
@@ -541,13 +686,13 @@
 }
 
 .slla-filter-btn:hover {
-    background: #e69500; /* Darker yellow on hover */
+    background: #e69500;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .slla-filter-btn:disabled {
-    background: #cccccc; /* Grey background when disabled */
+    background: #cccccc;
     cursor: not-allowed;
     transform: none;
 }
@@ -558,7 +703,7 @@
 }
 
 .slla-clear-btn {
-    background: #ff6f61; /* Red background for clear */
+    background: #ff6f61;
     color: #ffffff;
     padding: 8px 16px;
     border-radius: 6px;
@@ -570,27 +715,27 @@
 }
 
 .slla-clear-btn:hover {
-    background: #e65a50; /* Darker red on hover */
+    background: #e65a50;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Logs Table Styling */
 .slla-logs-table-wrap {
-    overflow-x: auto; /* Enable horizontal scrolling on small screens */
+    overflow-x: auto;
 }
 
 .slla-dashboard-table {
     width: 100%;
     border-collapse: collapse;
-    background: #ffffff; /* White background */
-    border: 1px solid #e0e0e0; /* Light grey border */
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    overflow: hidden; /* Ensure border-radius applies */
+    overflow: hidden;
 }
 
 .slla-dashboard-table thead {
-    background: #f9f9f9; /* Very light grey background */
+    background: #f9f9f9;
 }
 
 .slla-dashboard-table th {
@@ -598,15 +743,15 @@
     text-align: left;
     font-size: 14px;
     font-weight: 600;
-    color: #333333; /* Dark grey */
-    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+    color: #333333;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .slla-dashboard-table td {
     padding: 12px 15px;
     font-size: 13px;
-    color: #666666; /* Medium grey */
-    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+    color: #666666;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 /* Table Row Animation */
@@ -622,7 +767,7 @@
 }
 
 .slla-dashboard-table tbody tr:hover {
-    background: #fff5e0; /* Light yellow on hover */
+    background: #fff5e0;
 }
 
 /* Event Type Styling */
@@ -631,15 +776,15 @@
 }
 
 .slla-event-type-successful_login {
-    color: #f5a623; /* Yellow for successful logins */
+    color: #f5a623;
 }
 
 .slla-event-type-lockout {
-    color: #ff6f61; /* Red for lockouts */
+    color: #ff6f61;
 }
 
 .slla-event-type-failed_attempt {
-    color: #f5a623; /* Yellow for failed attempts */
+    color: #f5a623;
 }
 
 /* Back to Top Button Styling */
@@ -647,7 +792,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #f5a623; /* Yellow background */
+    background: #f5a623;
     color: #ffffff;
     padding: 10px 15px;
     border-radius: 6px;
@@ -661,7 +806,7 @@
 }
 
 .slla-back-to-top:hover {
-    background: #e69500; /* Darker yellow on hover */
+    background: #e69500;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
@@ -669,7 +814,7 @@
 /* Premium Page Styling */
 .slla-premium-header {
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 25px;
     margin-bottom: 20px;
@@ -698,16 +843,16 @@
 
 .slla-premium-activation-form input[type="text"] {
     padding: 10px;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     font-size: 14px;
     color: #333333;
-    background: #f9f9f9; /* Very light grey background */
+    background: #f9f9f9;
     width: 250px;
 }
 
 .slla-premium-activation-form input[type="text"]:focus {
-    border-color: #f5a623; /* Yellow on focus */
+    border-color: #f5a623;
     outline: none;
 }
 
@@ -719,7 +864,7 @@
 /* Why Upgrade Section */
 .slla-premium-why-upgrade {
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 25px;
     margin-bottom: 20px;
@@ -739,7 +884,7 @@
 /* Features Comparison Table */
 .slla-premium-features {
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 25px;
     margin-bottom: 20px;
@@ -755,13 +900,13 @@
     width: 100%;
     border-collapse: collapse;
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
 }
 
 .slla-premium-table thead {
-    background: #f9f9f9; /* Very light grey background */
+    background: #f9f9f9;
 }
 
 .slla-premium-table th,
@@ -770,7 +915,7 @@
     text-align: center;
     font-size: 14px;
     color: #333333;
-    border-bottom: 1px solid #e0e0e0; /* Light grey border */
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .slla-premium-table th {
@@ -788,12 +933,12 @@
 }
 
 .slla-check {
-    color: #f5a623; /* Yellow */
+    color: #f5a623;
     font-size: 18px;
 }
 
 .slla-cross {
-    color: #ff6f61; /* Red */
+    color: #ff6f61;
     font-size: 18px;
 }
 
@@ -817,7 +962,7 @@
 
 .slla-highlight-card {
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
@@ -830,7 +975,7 @@
 
 .slla-highlight-card .dashicons {
     font-size: 40px;
-    color: #f5a623; /* Yellow */
+    color: #f5a623;
     margin-bottom: 15px;
 }
 
@@ -849,7 +994,7 @@
 /* Premium Footer on Settings Page */
 .slla-premium-footer {
     background: #ffffff;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
@@ -924,5 +1069,75 @@
 
     .slla-premium-table .description {
         font-size: 10px;
+    }
+}
+
+/* Real-Time Notifications Form Styling */
+.slla-real-time-notifications ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+.slla-real-time-notifications li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.slla-real-time-notifications li:hover {
+    background: #fff5e0; /* Light yellow on hover */
+}
+
+.slla-real-time-notifications input[type="checkbox"] {
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    accent-color: #f5a623; /* Yellow checkbox */
+}
+
+.slla-real-time-notifications input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333333;
+    background: #f9f9f9;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.slla-real-time-notifications input[type="text"]:focus {
+    border-color: #f5a623;
+    outline: none;
+}
+
+.slla-real-time-notifications label {
+    font-size: 14px;
+    color: #333333; /* Dark grey */
+}
+
+/* Center the Save Notification Settings Button */
+.slla-real-time-notifications .slla-submit-btn {
+    display: block;
+    margin: 0 auto; /* Center the button */
+}
+
+/* Responsive Adjustments for Notification Form */
+@media (max-width: 768px) {
+    .slla-real-time-notifications li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .slla-real-time-notifications input[type="checkbox"] {
+        margin-bottom: 10px;
+    }
+
+    .slla-real-time-notifications input[type="text"] {
+        width: 100%;
     }
 }

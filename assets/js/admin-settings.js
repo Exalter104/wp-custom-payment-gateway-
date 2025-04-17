@@ -99,4 +99,32 @@ jQuery(document).ready(function($) {
         }, 500);
         $('#slla_setup_code').focus();
     });
+
+// Real-Time Notifications: Fetch and Update
+if ($('.slla-real-time-notifications').length) {
+    function fetchNotifications() {
+        $.ajax({
+            url: sllaSettings.ajaxUrl,
+            method: 'POST',
+            data: {
+                action: 'slla_get_recent_failed_attempts',
+                nonce: sllaSettings.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('.slla-notification-list').html(response.data.html);
+                }
+            },
+            error: function() {
+                console.log('Error fetching notifications.');
+            }
+        });
+    }
+
+    // Initial fetch
+    fetchNotifications();
+
+    // Poll every 30 seconds
+    setInterval(fetchNotifications, 30000);
+}
 });
