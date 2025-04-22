@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "twilio/sdk": "^8.5"
+        "twilio/sdk": "^8.5",
+        "tecnickcom/tcpdf": "^6.9"
     }
 }

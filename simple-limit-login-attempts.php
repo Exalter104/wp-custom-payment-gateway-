@@ -1,15 +1,17 @@
 <?php
 /**
- * Plugin Name: Simple Limit Login Attempts
- * Plugin URI: https://exarth.com
- * Plugin Description: A simple plugin to limit login attempts and protect against brute force attacks.
- * Version: 1.0.0
- * Author: Exarth
- * Author URI: https://exarth.com
+* Plugin Name: Simple Limit Login Attempts
+* Plugin URI: https://exarth.com
+* Description: Block excessive login attempts and protect your site against brute force attacks. Simple, yet powerful tools to improve site performance.
+* Version: 1.0.1
+* Author: Exarth
+* Author URI: https://exarth.com
 * License: GPL-2.0-or-later
 * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: simple-limit-login-attempts
- */
+* Text Domain: simple-limit-login-attempts
+*/
+
+
 
 // SECURITY CHECK
 if ( ! defined( 'ABSPATH' ) ) {
@@ -151,6 +153,13 @@ if ( file_exists( SLLA_PLUGIN_DIR . 'includes/class-slla-core.php' ) ) {
         echo '<div class="notice notice-error"><p>' . __( 'Simple Limit Login Attempts: Core file is missing. Plugin functionality may be limited.', 'simple-limit-login-attempts' ) . '</p></div>';
     });
 }
+if ( file_exists( SLLA_PLUGIN_DIR . 'includes/class-slla-2fa.php' ) ) {
+    require_once SLLA_PLUGIN_DIR . 'includes/class-slla-2fa.php';
+    // Initialize SLLA_2FA class
+    new SLLA_2FA();
+} else {
+    error_log( 'Simple Limit Login Attempts: 2FA file missing.' );
+}
 
 // ENQUEUE ADMIN STYLES AND SCRIPTS
 $css_version = SLLA_VERSION;
@@ -240,3 +249,14 @@ function slla_uninstall() {
 
 // CREATE CUSTOM DATABASE TABLE ON PLUGIN ACTIVATION
 register_activation_hook( __FILE__, 'slla_create_logs_table' );
+
+// Remove WordPress version and footer text
+function remove_admin_footer_text() {
+    return '';
+}
+add_filter('admin_footer_text', 'remove_admin_footer_text');
+
+function remove_wp_version_footer() {
+    return '';
+}
+add_filter('update_footer', 'remove_wp_version_footer', 9999);

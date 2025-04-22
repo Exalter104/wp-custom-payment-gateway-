@@ -17,6 +17,9 @@ if ( isset( $_POST['slla_clear_logs'] ) && check_admin_referer( 'slla_clear_logs
 </div>
 <?php
 }
+
+// Create an instance of SLLA_Admin to call the method
+$admin = new SLLA_Admin();
 ?>
 
 <div class="slla-dashboard-wrap">
@@ -73,7 +76,7 @@ if ( isset( $_POST['slla_clear_logs'] ) && check_admin_referer( 'slla_clear_logs
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $this->display_filtered_logs_table( $date_filter, $event_type ); ?>
+                    <?php $admin->display_filtered_logs_table( $date_filter, $event_type ); ?>
                 </tbody>
             </table>
         </div>

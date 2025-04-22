@@ -2,6 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
+
+// Create an instance of SLLA_Admin to call the method
+$admin = new SLLA_Admin();
 ?>
 
 <div class="slla-dashboard-wrap">
@@ -10,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
     <div class="slla-card slla-real-time-notifications">
         <h2><?php _e( 'Notification Settings', 'simple-limit-login-attempts' ); ?></h2>
-        <?php if ( $this->is_premium_active() ) : ?>
+        <?php if ( $admin->is_premium_active() ) : ?>
         <form method="post" action="options.php" id="slla-notification-settings-form">
             <?php settings_fields( 'slla_notifications_group' ); ?>
             <ul>

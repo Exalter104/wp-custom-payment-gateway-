@@ -12,6 +12,10 @@ if (isset($_POST['slla_reset_settings']) && check_admin_referer('slla_reset_sett
     update_option('slla_denylist_ips', '');
     update_option('slla_custom_error_message', '');
     update_option('slla_gdpr_compliance', 0);
+    update_option('slla_enable_auto_updates', 0);
+    update_option('slla_email_notifications', 0);
+    update_option('slla_strong_password', 0);
+    update_option('slla_enable_2fa', 0);
     ?>
 <div class="notice notice-success is-dismissible">
     <p><?php _e('Settings have been reset to default values.', 'simple-limit-login-attempts'); ?></p>
@@ -131,6 +135,122 @@ if (isset($_POST['slla_reset_settings']) && check_admin_referer('slla_reset_sett
                     <p class="description">
                         <?php _e('Enable GDPR compliance (do not store sensitive data in logs).', 'simple-limit-login-attempts'); ?>
                     </p>
+                </div>
+            </div>
+            <?php submit_button(__('Save Changes', 'simple-limit-login-attempts'), 'primary slla-submit-btn', 'submit', false); ?>
+        </form>
+
+        <!-- Login Security Checklist -->
+        <h2><?php _e('Login Security Checklist', 'simple-limit-login-attempts'); ?></h2>
+        <form method="post" action="options.php">
+            <?php settings_fields('slla_security_checklist_group'); ?>
+            <div class="slla-settings-grid">
+                <!-- Enable Auto Updates -->
+                <div class="slla-setting-item">
+                    <label
+                        for="slla_enable_auto_updates"><?php _e('Enable Auto Updates', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Enable automatic updates for the plugin.', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <input type="checkbox" name="slla_enable_auto_updates" id="slla_enable_auto_updates" value="1"
+                        <?php checked(1, get_option('slla_enable_auto_updates', 0)); ?> />
+                    <p class="description">
+                        <?php _e('Enable automatic updates for the plugin.', 'simple-limit-login-attempts'); ?>
+                    </p>
+                </div>
+
+                <!-- Enable Email Notifications -->
+                <div class="slla-setting-item">
+                    <label
+                        for="slla_email_notifications"><?php _e('Enable Email Notifications', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Receive email notifications for failed login attempts. (Premium feature)', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <?php
+                    $admin = new SLLA_Admin();
+                    if ( ! $admin->is_premium_active() ) {
+                        ?>
+                    <input type="checkbox" disabled />
+                    <p class="description">
+                        <?php _e('Enable email notifications for failed login attempts. (Premium feature)', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    } else {
+                        ?>
+                    <input type="checkbox" name="slla_email_notifications" id="slla_email_notifications" value="1"
+                        <?php checked(1, get_option('slla_email_notifications', 0)); ?> />
+                    <p class="description">
+                        <?php _e('Enable email notifications for failed login attempts.', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    }
+                    ?>
+                </div>
+
+                <!-- Enforce Strong Passwords -->
+                <div class="slla-setting-item">
+                    <label
+                        for="slla_strong_password"><?php _e('Enforce Strong Passwords', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Force users to use strong passwords. (Premium feature)', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <?php
+                    if ( ! $admin->is_premium_active() ) {
+                        ?>
+                    <input type="checkbox" disabled />
+                    <p class="description">
+                        <?php _e('Enforce strong passwords for users. (Premium feature)', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    } else {
+                        ?>
+                    <input type="checkbox" name="slla_strong_password" id="slla_strong_password" value="1"
+                        <?php checked(1, get_option('slla_strong_password', 0)); ?> />
+                    <p class="description">
+                        <?php _e('Enforce strong passwords for users.', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    }
+                    ?>
+                </div>
+
+                <!-- Enable Two-Factor Authentication -->
+                <div class="slla-setting-item">
+                    <label
+                        for="slla_enable_2fa"><?php _e('Enable Two-Factor Authentication (2FA)', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Add an extra layer of security with 2FA via SMS. (Premium feature)', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <?php
+                    if ( ! $admin->is_premium_active() ) {
+                        ?>
+                    <input type="checkbox" disabled />
+                    <p class="description">
+                        <?php _e('Enable Two-Factor Authentication via SMS. (Premium feature)', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    } else {
+                        ?>
+                    <input type="checkbox" name="slla_enable_2fa" id="slla_enable_2fa" value="1"
+                        <?php checked(1, get_option('slla_enable_2fa', 0)); ?> />
+                    <p class="description">
+                        <?php _e('Enable Two-Factor Authentication via SMS.', 'simple-limit-login-attempts'); ?>
+                    </p>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
             <?php submit_button(__('Save Changes', 'simple-limit-login-attempts'), 'primary slla-submit-btn', 'submit', false); ?>

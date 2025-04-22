@@ -27,7 +27,8 @@ class SLLA_Admin {
         // Add AJAX action for real-time notifications
         add_action( 'wp_ajax_slla_get_recent_failed_attempts', array( $this, 'ajax_get_recent_failed_attempts' ) );
     }
-/**
+
+    /**
      * Add admin menu pages.
      */
     public function add_admin_menu() {
@@ -96,12 +97,13 @@ class SLLA_Admin {
         );
     }
 
-  /**
+    /**
      * Render the notifications page.
      */
     public function render_notifications_page() {
         require_once SLLA_PLUGIN_DIR . 'templates/notifications.php';
     }
+
     /**
      * Register settings for the plugin.
      */
@@ -209,6 +211,50 @@ class SLLA_Admin {
         register_setting( 'slla_security_checklist_group', 'slla_enable_auto_updates' );
         register_setting( 'slla_security_checklist_group', 'slla_email_notifications' ); // Premium
         register_setting( 'slla_security_checklist_group', 'slla_strong_password' ); // Premium
+        register_setting( 'slla_security_checklist_group', 'slla_enable_2fa', array( // New 2FA setting
+            'type' => 'integer',
+            'sanitize_callback' => 'absint',
+            'default' => 0,
+        ));
+
+        add_settings_section(
+            'slla_security_checklist',
+            __( 'Login Security Checklist', 'simple-limit-login-attempts' ),
+            array( $this, 'security_checklist_callback' ),
+            'slla-settings'
+        );
+
+        add_settings_field(
+            'slla_enable_auto_updates',
+            __( 'Enable Auto Updates', 'simple-limit-login-attempts' ),
+            array( $this, 'enable_auto_updates_callback' ),
+            'slla-settings',
+            'slla_security_checklist'
+        );
+
+        add_settings_field(
+            'slla_email_notifications',
+            __( 'Enable Email Notifications', 'simple-limit-login-attempts' ),
+            array( $this, 'email_notifications_callback' ),
+            'slla-settings',
+            'slla_security_checklist'
+        );
+
+        add_settings_field(
+            'slla_strong_password',
+            __( 'Enforce Strong Passwords', 'simple-limit-login-attempts' ),
+            array( $this, 'strong_password_callback' ),
+            'slla-settings',
+            'slla_security_checklist'
+        );
+
+        add_settings_field(
+            'slla_enable_2fa',
+            __( 'Enable Two-Factor Authentication (2FA)', 'simple-limit-login-attempts' ),
+            array( $this, 'enable_2fa_callback' ),
+            'slla-settings',
+            'slla_security_checklist'
+        );
 
         // Premium Settings
         register_setting( 'slla_premium_group', 'slla_setup_code', array(
@@ -269,6 +315,13 @@ class SLLA_Admin {
     }
 
     /**
+     * Callback for the security checklist section.
+     */
+    public function security_checklist_callback() {
+        echo '<p class="description">' . __( 'Enhance your site security with these options.', 'simple-limit-login-attempts' ) . '</p>';
+    }
+
+    /**
      * Callback for the premium settings section.
      */
     public function premium_settings_callback() {
@@ -325,6 +378,57 @@ class SLLA_Admin {
         $gdpr_compliance = get_option( 'slla_gdpr_compliance', 0 );
         echo '<input type="checkbox" name="slla_gdpr_compliance" value="1" ' . checked( 1, $gdpr_compliance, false ) . ' />';
         echo '<p class="description">' . __( 'Enable GDPR compliance (do not store sensitive data in logs).', 'simple-limit-login-attempts' ) . '</p>';
+    }
+
+    /**
+     * Callback for enable auto updates field.
+     */
+    public function enable_auto_updates_callback() {
+        $enable_auto_updates = get_option( 'slla_enable_auto_updates', 0 );
+        echo '<input type="checkbox" name="slla_enable_auto_updates" value="1" ' . checked( 1, $enable_auto_updates, false ) . ' />';
+        echo '<p class="description">' . __( 'Enable automatic updates for the plugin.', 'simple-limit-login-attempts' ) . '</p>';
+    }
+
+    /**
+     * Callback for email notifications field.
+     */
+    public function email_notifications_callback() {
+        $email_notifications = get_option( 'slla_email_notifications', 0 );
+        if ( ! $this->is_premium_active() ) {
+            echo '<input type="checkbox" disabled />';
+            echo '<p class="description">' . __( 'Enable email notifications for failed login attempts. (Premium feature)', 'simple-limit-login-attempts' ) . '</p>';
+        } else {
+            echo '<input type="checkbox" name="slla_email_notifications" value="1" ' . checked( 1, $email_notifications, false ) . ' />';
+            echo '<p class="description">' . __( 'Enable email notifications for failed login attempts.', 'simple-limit-login-attempts' ) . '</p>';
+        }
+    }
+
+    /**
+     * Callback for strong password field.
+     */
+    public function strong_password_callback() {
+        $strong_password = get_option( 'slla_strong_password', 0 );
+        if ( ! $this->is_premium_active() ) {
+            echo '<input type="checkbox" disabled />';
+            echo '<p class="description">' . __( 'Enforce strong passwords for users. (Premium feature)', 'simple-limit-login-attempts' ) . '</p>';
+        } else {
+            echo '<input type="checkbox" name="slla_strong_password" value="1" ' . checked( 1, $strong_password, false ) . ' />';
+            echo '<p class="description">' . __( 'Enforce strong passwords for users.', 'simple-limit-login-attempts' ) . '</p>';
+        }
+    }
+
+    /**
+     * Callback for enable 2FA field.
+     */
+    public function enable_2fa_callback() {
+        $enable_2fa = get_option( 'slla_enable_2fa', 0 );
+        if ( ! $this->is_premium_active() ) {
+            echo '<input type="checkbox" disabled />';
+            echo '<p class="description">' . __( 'Enable Two-Factor Authentication via SMS. (Premium feature)', 'simple-limit-login-attempts' ) . '</p>';
+        } else {
+            echo '<input type="checkbox" name="slla_enable_2fa" value="1" ' . checked( 1, $enable_2fa, false ) . ' />';
+            echo '<p class="description">' . __( 'Enable Two-Factor Authentication via SMS.', 'simple-limit-login-attempts' ) . '</p>';
+        }
     }
 
     /**
@@ -429,7 +533,8 @@ class SLLA_Admin {
     public function get_total_successful_logins() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'slla_logs';
-        return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE type = %s", 'successful_login' ) );
+        $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE type = %s", 'successful_login' ) );
+        return (int) $count ?: 0; // Cast to int and return 0 if null
     }
 
     /**
@@ -440,7 +545,8 @@ class SLLA_Admin {
     public function get_total_lockouts() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'slla_logs';
-        return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE type = %s", 'lockout' ) );
+        $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table_name WHERE type = %s", 'lockout' ) );
+        return (int) $count ?: 0; // Cast to int and return 0 if null
     }
 
     /**
