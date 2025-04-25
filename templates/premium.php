@@ -21,7 +21,7 @@ if ( isset( $_POST['slla_setup_code'] ) && ! empty( $_POST['slla_setup_code'] ) 
     }
 }
 
-if ( $this->is_premium_active() ) {
+if ( $admin->is_premium_active() ) {
     // Redirect to settings page for premium settings
     ?>
 <div class="slla-dashboard-wrap">

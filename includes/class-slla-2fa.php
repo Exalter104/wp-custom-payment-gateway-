@@ -49,7 +49,7 @@ class SLLA_2FA {
         // Generate and send OTP
         $otp = $this->generate_otp();
         $this->store_otp( $user->ID, $otp );
-        $this->send_otp_sms( $user, $otp );
+        $this->send_otp( $user, $otp );
         // Prevent full login until OTP is verified
         error_log( 'Redirecting to OTP form' );
         wp_logout();
@@ -133,27 +133,66 @@ class SLLA_2FA {
     }
 
     /**
-     * Send OTP via SMS using Twilio.
+     * Send OTP via SMS or Email (with fallback).
      *
      * @param WP_User $user WP_User object.
      * @param string $otp OTP to send.
      * @return bool
      */
-    public function send_otp_sms( $user, $otp ) {
+    public function send_otp( $user, $otp ) {
         $phone_number = get_user_meta( $user->ID, 'slla_phone_number', true );
         if ( empty( $phone_number ) ) {
             $phone_number = get_option( 'slla_admin_phone_number', '' );
         }
-        if ( empty( $phone_number ) ) {
-            error_log( '2FA SMS Failed: No phone number available for user ' . $user->ID );
+        $user_email = $user->user_email;
+
+        if ( empty( $phone_number ) && empty( $user_email ) ) {
+            error_log( '2FA Failed: No phone number or email available for user ' . $user->ID );
             return false;
         }
+
+        // Prepare the OTP message
         $message = sprintf(
             __( 'Your 2FA OTP for %s is %s. Valid for 10 minutes.', 'simple-limit-login-attempts' ),
             home_url(),
             $otp
         );
-        return slla_send_sms_notification( $message );
+
+        // Try sending via SMS
+        $sms_sent = false;
+        if ( ! empty( $phone_number ) ) {
+            $sms_sent = SLLA_Twilio::send_sms_notification( $message );
+            if ( $sms_sent ) {
+                error_log( '2FA OTP sent via SMS to: ' . $phone_number );
+                // Clear the limit exceeded transient if SMS is successful
+                delete_transient( 'slla_twilio_limit_exceeded' );
+            } else {
+                error_log( '2FA SMS Failed: Falling back to email for user ' . $user->ID );
+                // Set a transient to indicate SMS limit exceeded
+                set_transient( 'slla_twilio_limit_exceeded', true, DAY_IN_SECONDS );
+            }
+        }
+
+        // Fallback to email if SMS fails or phone number is not available
+        if ( ! $sms_sent && ! empty( $user_email ) ) {
+            $subject = __( 'Your 2FA Code - Simple Limit Login Attempts', 'simple-limit-login-attempts' );
+            $email_message = sprintf(
+                __( "Your 2FA OTP for %s is %s. Valid for 10 minutes.\n\nIf you did not request this code, please ignore this email.", 'simple-limit-login-attempts' ),
+                home_url(),
+                $otp
+            );
+            $email_sent = wp_mail( $user_email, $subject, $email_message );
+
+            if ( $email_sent ) {
+                error_log( '2FA OTP sent via email to: ' . $user_email );
+                return true;
+            } else {
+                error_log( '2FA Email Failed: Unable to send OTP to ' . $user_email );
+                return false;
+            }
+        }
+
+        return $sms_sent;
     }
 
     /**
@@ -170,6 +209,12 @@ class SLLA_2FA {
             return;
         }
         error_log( 'Displaying OTP form' );
+
+        // Display message if SMS limit exceeded
+        if ( get_transient( 'slla_twilio_limit_exceeded' ) ) {
+            echo '<p style="color: red;">' . __( 'SMS limit exceeded. 2FA code has been sent to your email.', 'simple-limit-login-attempts' ) . '</p>';
+        }
+
         require_once SLLA_PLUGIN_DIR . 'templates/otp-verification.php';
         exit;
     }

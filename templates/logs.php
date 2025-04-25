@@ -76,7 +76,7 @@ $admin = new SLLA_Admin();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $admin->display_filtered_logs_table( $date_filter, $event_type ); ?>
+                    <?php $admin->get_logs()->display_filtered_logs_table( $date_filter, $event_type ); ?>
                 </tbody>
             </table>
         </div>

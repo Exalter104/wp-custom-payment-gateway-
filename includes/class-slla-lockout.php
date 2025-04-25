@@ -103,7 +103,7 @@ class SLLA_Lockout {
                 $ip_address,
                 home_url()
             );
-            $result = slla_send_sms_notification( $message );
+            $result = SLLA_Twilio::send_sms_notification( $message );
             if ( $result ) {
                 error_log( "SMS notification sent for lockout of user $username from IP $ip_address" );
             } else {

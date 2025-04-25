@@ -7,16 +7,21 @@
 
 /* General Dashboard Styling */
 .slla-dashboard-wrap {
-    background: #f5f7fa; /* Light grey background for the dashboard */
+    background: #f5f7fa;
     padding: 30px;
     min-height: 100vh;
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333333; /* Dark grey text */
+    color: #333333;
 }
 
-/* Remove Background Animation (Not Needed for Theme) */
+/* Modern Wrapper Styling */
+.slla-modern-wrap {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecef 100%);
+}
+
+/* Remove Background Animation */
 .slla-dashboard-wrap::before {
-    display: none; /* Remove the pulsing gradient animation */
+    display: none;
 }
 
 /* Horizontal Submenu Styling */
@@ -24,15 +29,15 @@
     display: flex;
     justify-content: flex-start;
     margin-bottom: 30px;
-    background: #ffffff; /* White background for submenu */
+    background: #ffffff;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-    border: 1px solid #e0e0e0; /* Light grey border */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
 }
 
 .slla-submenu a {
-    color: #666666; /* Medium grey text */
+    color: #666666;
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
@@ -43,8 +48,8 @@
 
 .slla-submenu a:hover,
 .slla-submenu a.current {
-    color: #f5a623; /* Yellow for active/hover */
-    background: #fff5e0; /* Light yellow background on hover/active */
+    color: #f5a623;
+    background: #fff5e0;
 }
 
 /* Two-Column Layout */
@@ -77,15 +82,15 @@
 .slla-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px; /* Spacing between sections */
+    gap: 30px;
 }
 
-/* Card Styling (White Background with Grey Borders) */
+/* Card Styling */
 .slla-card {
-    background: #ffffff; /* White background for cards */
+    background: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-    border: 1px solid #e0e0e0; /* Light grey border */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
     padding: 25px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0;
@@ -103,22 +108,54 @@
 }
 
 .slla-card:hover {
-    transform: translateY(-5px); /* Stronger lift on hover */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Modern Card Styling */
+.slla-modern-card {
+    background: linear-gradient(145deg, #ffffff, #f9f9f9);
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    padding: 30px;
 }
 
 /* Heading Styling */
 .slla-dashboard-wrap h1 {
-    color: #333333; /* Dark grey heading */
+    color: #333333;
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 20px;
-    text-transform: none; /* Remove uppercase for a cleaner look */
+    text-transform: none;
     letter-spacing: normal;
+}
+.slla-insights-card {
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.3s ease;
+}
+.slla-insights-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.slla-insights-card li strong {
+    color: #f5a623; /* Yellow color jo aapke theme ke saath match karta hai */
+}
+.slla-insights-card li::before {
+    content: "🔍";
+    margin-right: 5px;
+}
+.slla-title-modern {
+    background: linear-gradient(to right, #f5a623, #e69500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 32px;
+    margin-bottom: 30px;
 }
 
 .slla-dashboard-wrap h2 {
-    color: #333333; /* Dark grey heading */
+    color: #333333;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 20px;
@@ -126,54 +163,77 @@
     align-items: center;
 }
 
-.slla-dashboard-wrap h2::before {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    font-family: "Dashicons";
-    font-size: 20px;
-    line-height: 20px;
-    vertical-align: middle;
+/* Modern Title Styling */
+.slla-modern-title {
+    font-size: 24px;
+    color: #333333;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
 }
 
-/* Specific Icons for Headings using Dashicons (Updated with Yellow) */
-.slla-quick-stats h2::before { content: "\f239"; color: #0f1b1f; } /* Dark color for contrast */
-.slla-failed-attempts h2::before { content: "\f534"; color: #f5a623; } /* Yellow */
-.slla-security-checklist h2::before { content: "\f328"; color: #222222; } /* Dark color for contrast */
-.slla-premium-promotion h2::before { content: "\f524"; color: #f5a623; } /* Yellow */
-.slla-settings h2::before { content: "\f111"; color: #f5a623; } /* Yellow */
-.slla-logs h2::before { content: "\f321"; color: #f5a623; } /* Yellow */
-.slla-tools h2::before { content: "\f309"; color: #f5a623; } /* Yellow */
-.slla-ai-insights h2::before { content: "\f101"; color: #f5a623; } /* Yellow for AI Insights */
-.slla-real-time-notifications h2::before { content: "\f227"; color: #f5a623; } /* Yellow for Real-Time Notifications */
+.slla-modern-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, #f5a623, #e69500);
+    border-radius: 2px;
+}
+
+.slla-title-icon {
+    color: #f5a623;
+    margin-right: 10px;
+}
 
 /* Quick Stats Styling */
 .slla-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 25px; /* Spacing between stats cards */
+    gap: 25px;
+}
+
+.slla-modern-stats-grid {
+    gap: 30px;
 }
 
 .slla-stat {
     text-align: center;
-    padding: 20px; /* Adjusted padding for better internal spacing */
-    background: #ffffff; /* White background */
+    padding: 20px;
+    background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .slla-stat:hover {
-    transform: scale(1.05); /* Slightly larger scale on hover */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.slla-modern-stat {
+    background: linear-gradient(145deg, #f9f9f9, #ffffff);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: none;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.slla-stat-icon {
+    font-size: 24px;
+    color: #f5a623;
 }
 
 .slla-stat-label {
     display: block;
     font-size: 13px;
-    color: #666666; /* Medium grey */
+    color: #666666;
     margin-bottom: 6px;
     text-transform: uppercase;
 }
@@ -182,7 +242,7 @@
     display: block;
     font-size: 26px;
     font-weight: 600;
-    color: #f5a623; /* Yellow for values */
+    color: #f5a623;
 }
 
 /* Circular Indicator for Failed Attempts */
@@ -198,275 +258,208 @@
     border-radius: 50%;
     margin: 0 auto 15px auto;
     transition: transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .slla-failed-attempts-circle:hover {
     transform: scale(1.05);
 }
 
-.slla-failed-attempts-low { background: #207532; } /* Green for low attempts */
-.slla-failed-attempts-medium { background: #f5a623; } /* Yellow for medium attempts */
-.slla-failed-attempts-high { background: #ff6f61; } /* Red for high attempts */
+.slla-failed-attempts-low { background: linear-gradient(145deg, #207532, #1a5f2a); }
+.slla-failed-attempts-medium { background: linear-gradient(145deg, #f5a623, #e69500); }
+.slla-failed-attempts-high { background: linear-gradient(145deg, #ff6f61, #e65a50); }
 
 /* Failed Attempts Section */
 .slla-failed-attempts {
-    margin-top: 30px; /* Space between Quick Stats and Failed Attempts */
+    margin-top: 30px;
 }
 
 .slla-failed-attempts-text {
     text-align: center;
-    color: #666666; /* Medium grey */
+    color: #666666;
     font-size: 13px;
     font-weight: 400;
 }
 
-/* Button Styling (Yellow with Professional Design) */
+/* Modern Content Styling */
+.slla-modern-content {
+    padding: 20px 0;
+}
+
+/* Unified Button Styling for All Buttons */
 .slla-view-more-btn,
 .slla-upgrade-btn,
 .slla-submit-btn,
-.slla-dashboard-wrap button.button {
+.slla-filter-btn,
+.slla-dashboard-wrap button.button,
+.slla-modern-btn {
     display: inline-block;
-    padding: 12px 24px; /* Larger padding for a professional look */
-    background: #f5a623; /* Yellow background */
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #f5a623, #e69500);
     color: #ffffff;
     text-decoration: none;
-    border-radius: 6px; /* Modern rounded corners */
+    border-radius: 25px;
     font-size: 14px;
-    font-weight: 600; /* Bolder text */
+    font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
 }
 
 .slla-view-more-btn:hover,
+.slla-upgrade-btn:hover,
 .slla-submit-btn:hover,
-.slla-dashboard-wrap button.button:hover {
-    background: #e69500; /* Darker yellow on hover */
-    transform: translateY(-2px); /* Lift effect on hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Add shadow on hover */
-}
-
-.slla-upgrade-btn {
-    background: #f5a623; /* Yellow background */
-}
-
-.slla-upgrade-btn:hover {
-    background: #e69500; /* Darker yellow on hover */
+.slla-filter-btn:hover,
+.slla-dashboard-wrap button.button:hover,
+.slla-modern-btn:hover {
+    background: linear-gradient(90deg, #e69500, #d58500);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.slla-view-more-btn:active,
+.slla-upgrade-btn:active,
+.slla-submit-btn:active,
+.slla-filter-btn:active,
+.slla-dashboard-wrap button.button:active,
+.slla-modern-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Destructive Action Buttons (Reset, Clear) */
+.slla-reset-btn,
+.slla-clear-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #ff6f61, #e65a50);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+}
+
+.slla-reset-btn:hover,
+.slla-clear-btn:hover {
+    background: linear-gradient(90deg, #e65a50, #d54a40);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.slla-reset-btn:active,
+.slla-clear-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Security Checklist Styling */
 .slla-security-checklist {
-    margin-top: 30px; /* Space above the card */
+    margin-top: 30px;
 }
 
-.slla-security-checklist ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 25px; /* Space between checkboxes and button */
-}
-
-.slla-security-checklist li {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-}
-
-.slla-security-checklist li:hover {
-    background: #fff5e0; /* Light yellow on hover */
-}
-
-.slla-security-checklist input[type="checkbox"] {
-    margin-right: 12px;
-    width: 16px;
-    height: 16px;
-    accent-color: #f5a623; /* Yellow checkbox */
-}
-
-.slla-security-checklist label {
-    font-size: 14px;
-    color: #333333; /* Dark grey */
-}
-
-/* Center the Save Checklist Button */
-.slla-security-checklist .slla-submit-btn {
-    display: block;
-    margin: 0 auto; /* Center the button */
-}
-
-/* Premium Promotion Styling */
-.slla-premium-promotion {
-    background: #ffffff; /* White background */
-    border: 1px solid #e0e0e0; /* Light grey border */
-    text-align: center;
-    margin-top: 30px; /* Space between Login Security Checklist and Upgrade to Premium */
-}
-
-.slla-premium-promotion h2 {
-    color: #333333; /* Dark grey */
-}
-
-.slla-premium-promotion p {
-    color: #666666; /* Medium grey */
-}
-
-.slla-premium-promotion .slla-upgrade-btn {
-    background: #f5a623; /* Yellow */
-    color: #ffffff;
-}
-
-/* AI Insights Section */
-.slla-ai-insights {
-    background: #ffffff; /* White background */
-    border: 1px solid #e0e0e0; /* Light grey border */
-    margin-top: 30px; /* Space above the card */
-}
-
-.slla-ai-insights h2 {
-    color: #333333; /* Dark grey */
-}
-
-.slla-ai-insights p {
-    color: #666666; /* Medium grey */
-}
-
-.slla-ai-insights ul li {
-    color: #333333; /* Dark grey */
-}
-
-/* Sidebar Real-Time Notifications Section */
-.slla-real-time-notifications {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    margin-bottom: 20px;
-    max-height: 550px;
-    overflow-y: auto;
-    width: 100%; /* Full width to match screenshot */
-}
-
-/* Real-Time Notifications Form Styling */
-.slla-real-time-notifications ul {
+.slla-security-checklist ul,
+.slla-modern-list {
     list-style: none;
     padding: 0;
     margin-bottom: 25px;
 }
 
-.slla-real-time-notifications li {
+.slla-security-checklist li,
+.slla-modern-list-item {
     margin-bottom: 15px;
     display: flex;
-    align-items: center; /* Align items center for checkboxes and inputs */
-    gap: 10px;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
-}
-
-.slla-real-time-notifications label {
-    font-size: 14px;
-    color: #333333; /* Dark grey */
-    flex: 0 0 200px; /* Fixed width for labels to align inputs */
-    font-weight: 500;
-}
-
-/* Checkbox Styling */
-.slla-real-time-notifications input[type="checkbox"] {
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-    accent-color: #f5a623; /* Yellow checkbox */
-}
-
-/* Checkbox Label Alignment */
-.slla-real-time-notifications li:has(input[type="checkbox"]) label {
-    flex: none; /* Remove fixed width for checkbox labels */
-    display: flex;
     align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    background: #f9f9f9;
 }
 
-/* Text Input Styling */
-.slla-real-time-notifications input[type="text"] {
-    padding: 8px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+.slla-security-checklist li:hover,
+.slla-modern-list-item:hover {
+    background: #fff5e0;
+}
+
+.slla-security-checklist input[type="checkbox"],
+.slla-modern-list-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: #f5a623;
+}
+
+.slla-security-checklist label,
+.slla-modern-list-item label {
     font-size: 14px;
     color: #333333;
-    background: #f9f9f9;
-    flex: 1; /* Take remaining space */
-    min-width: 300px; /* Ensure input doesn't shrink too much */
-    transition: border-color 0.3s ease;
-}
-
-.slla-real-time-notifications input[type="text"]:focus {
-    border-color: #f5a623;
-    outline: none;
-}
-
-/* Error Message Styling */
-.slla-error-message {
-    font-size: 12px;
-    color: #ff6f61;
-    margin-top: 4px;
-    flex: 0 0 100%; /* Ensure error message takes full width below input */
-    padding-left: 210px; /* Align with input by accounting for label width */
-}
-
-.slla-input-error {
-    border-color: #ff6f61 !important;
-}
-
-/* Align the Save Notification Settings Button to the Right */
-.slla-real-time-notifications .slla-submit-btn {
-    display: block;
-    margin: 0 0 0 auto; /* Align to the right */
-    background-color: #007cba; /* Blue color as per screenshot */
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 14px;
     font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.slla-real-time-notifications .slla-submit-btn:hover {
-    background-color: #006ba1; /* Darker blue on hover */
+.slla-security-checklist .description,
+.slla-modern-list-item .description {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 5px;
+    margin-left: 30px;
 }
 
-/* Responsive Adjustments for Notification Form */
-@media (max-width: 768px) {
-    .slla-real-time-notifications li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .slla-real-time-notifications label {
-        flex: 0 0 100%; /* Full width on mobile */
-    }
-
-    .slla-real-time-notifications input[type="text"] {
-        min-width: 100%; /* Full width on mobile */
-    }
-
-    .slla-real-time-notifications .slla-error-message {
-        padding-left: 0; /* Reset padding on mobile */
-    }
-
-    .slla-real-time-notifications .slla-submit-btn {
-        width: 100%; /* Full width on mobile */
-    }
+/* Center the Save Checklist Button */
+.slla-security-checklist .slla-submit-btn {
+    display: block;
+    margin: 0 auto;
 }
 
-/* Sidebar Real-Time Notifications List (Not Relevant to Form but Keeping for Completeness) */
+/* Premium Promotion Styling */
+.slla-premium-promotion {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* AI Insights Section */
+.slla-ai-insights {
+    margin-top: 30px;
+}
+
+.slla-ai-insights ul {
+    list-style: none;
+    padding: 0;
+}
+
+.slla-ai-insights li {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    transition: background 0.3s ease;
+}
+
+.slla-ai-insights li:hover {
+    background: #fff5e0;
+}
+
+/* Real-Time Notifications Section */
+.slla-real-time-notifications {
+    margin-bottom: 20px;
+}
+
 .slla-notification-list {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+.slla-modern-notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .slla-notification-card {
@@ -474,12 +467,21 @@
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     padding: 10px 15px;
-    margin-bottom: 10px;
     transition: background 0.3s ease;
 }
 
-.slla-notification-card:hover {
-    background: #fff5e0;
+.slla-modern-notification-card {
+    background: linear-gradient(145deg, #ffffff, #f9f9f9);
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-modern-notification-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .slla-notification-row {
@@ -487,7 +489,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
-    flex-wrap: wrap; /* Allow wrapping for better spacing */
+    flex-wrap: wrap;
 }
 
 .slla-notification-message {
@@ -515,38 +517,17 @@
     white-space: nowrap;
 }
 
-/* Responsive Design for Notification List */
-@media (max-width: 768px) {
-    .slla-notification-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .slla-notification-time,
-    .slla-notification-ip {
-        text-align: left;
-    }
-}
-
-.slla-premium-notice {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-}
-
-.slla-premium-notice .slla-upgrade-btn {
-    margin-left: 10px;
-    background-color: #f5a623;
-    color: #fff;
-    padding: 5px 10px;
-    text-decoration: none;
-    border-radius: 4px;
-}
-
-.slla-premium-notice .slla-upgrade-btn:hover {
-    background-color: #e69500;
+/* Modern Notice Styling */
+.slla-modern-notice {
+    background: #fff5e0;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
 }
 
 /* Responsive Design */
@@ -604,6 +585,82 @@
     .slla-notification-ip {
         text-align: left;
     }
+
+    /* Responsive Button Styling */
+    .slla-view-more-btn,
+    .slla-upgrade-btn,
+    .slla-submit-btn,
+    .slla-filter-btn,
+    .slla-reset-btn,
+    .slla-clear-btn,
+    .slla-dashboard-wrap button.button,
+    .slla-modern-btn {
+        padding: 12px;
+        font-size: 14px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Form Group Styling */
+.slla-form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.slla-form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333333;
+    font-size: 14px;
+}
+
+.slla-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.slla-form-group input[type="text"],
+.slla-form-group input[type="tel"] {
+    width: 100%;
+    max-width: 450px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333333;
+    background: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slla-form-group input[type="text"]:focus,
+.slla-form-group input[type="tel"]:focus {
+    border-color: #f5a623;
+    outline: none;
+    box-shadow: 0 0 8px rgba(245, 166, 35, 0.3);
+}
+
+.slla-form-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: #f5a623;
+}
+
+.slla-form-group .description {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 6px;
+}
+
+.slla-form-group .slla-error-message {
+    font-size: 12px;
+    color: #ff6f61;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
 }
 
 /* Settings Page Grid Layout */
@@ -616,11 +673,11 @@
 
 /* Individual Setting Item Styling */
 .slla-setting-item {
-    background: #ffffff; /* White background */
+    background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #e0e0e0; /* Light grey border */
+    border: 1px solid #e0e0e0;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Subtle shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -710,6 +767,7 @@
 
 .slla-input-error {
     border-color: #ff6f61 !important;
+    box-shadow: 0 0 5px rgba(255, 111, 97, 0.3) !important;
 }
 
 /* Error Message Preview Styling */
@@ -727,27 +785,6 @@
     color: #f5a623;
 }
 
-/* Reset Button Styling */
-.slla-reset-btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background: #ff6f61;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.slla-reset-btn:hover {
-    background: #e65a50;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
 /* Adjust Submit Button Margin */
 .slla-submit-btn {
     margin-top: 20px;
@@ -755,7 +792,8 @@
 }
 
 /* Logs Page Filter Form Styling */
-.slla-logs-filter-form {
+.slla-logs-filter-form,
+.slla-log-filters {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -763,13 +801,15 @@
     flex-wrap: wrap;
 }
 
-.slla-logs-filter-form label {
+.slla-logs-filter-form label,
+.slla-log-filters label {
     font-size: 14px;
     font-weight: 500;
     color: #333333;
 }
 
-.slla-logs-filter-form select.slla-input {
+.slla-logs-filter-form select.slla-input,
+.slla-log-filters select {
     padding: 8px 12px;
     border: 1px solid #e0e0e0;
     border-radius: 5px;
@@ -780,33 +820,10 @@
     min-width: 150px;
 }
 
-.slla-logs-filter-form select.slla-input:focus {
+.slla-logs-filter-form select.slla-input:focus,
+.slla-log-filters select:focus {
     border-color: #f5a623;
     outline: none;
-}
-
-.slla-filter-btn {
-    background: #f5a623;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.slla-filter-btn:hover {
-    background: #e69500;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.slla-filter-btn:disabled {
-    background: #cccccc;
-    cursor: not-allowed;
-    transform: none;
 }
 
 /* Clear Logs Form Styling */
@@ -814,30 +831,13 @@
     margin-bottom: 20px;
 }
 
-.slla-clear-btn {
-    background: #ff6f61;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.slla-clear-btn:hover {
-    background: #e65a50;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
 /* Logs Table Styling */
 .slla-logs-table-wrap {
     overflow-x: auto;
 }
 
-.slla-dashboard-table {
+.slla-dashboard-table,
+.slla-logs-table {
     width: 100%;
     border-collapse: collapse;
     background: #ffffff;
@@ -846,11 +846,13 @@
     overflow: hidden;
 }
 
-.slla-dashboard-table thead {
+.slla-dashboard-table thead,
+.slla-logs-table thead {
     background: #f9f9f9;
 }
 
-.slla-dashboard-table th {
+.slla-dashboard-table th,
+.slla-logs-table th {
     padding: 12px 15px;
     text-align: left;
     font-size: 14px;
@@ -859,7 +861,8 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-.slla-dashboard-table td {
+.slla-dashboard-table td,
+.slla-logs-table td {
     padding: 12px 15px;
     font-size: 13px;
     color: #666666;
@@ -878,7 +881,8 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-.slla-dashboard-table tbody tr:hover {
+.slla-dashboard-table tbody tr:hover,
+.slla-logs-table tbody tr:hover {
     background: #fff5e0;
 }
 
@@ -904,23 +908,29 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #f5a623;
+    background: linear-gradient(90deg, #f5a623, #e69500);
     color: #ffffff;
     padding: 10px 15px;
-    border-radius: 6px;
+    border-radius: 25px;
     border: none;
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
     display: none;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .slla-back-to-top:hover {
-    background: #e69500;
+    background: linear-gradient(90deg, #e69500, #d58500);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.slla-back-to-top:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Premium Page Styling */
@@ -1058,11 +1068,12 @@
     background: #cccccc;
     color: #ffffff;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 25px;
     font-size: 14px;
     font-weight: 600;
     border: none;
     cursor: not-allowed;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Premium Highlights */
@@ -1121,43 +1132,36 @@
 }
 
 .slla-premium-footer .slla-upgrade-btn {
-    background: #f5a623;
+    background: linear-gradient(90deg, #f5a623, #e69500);
     color: #ffffff;
 }
 
 /* Responsive Table */
 @media (max-width: 768px) {
     .slla-dashboard-table th,
-    .slla-dashboard-table td {
+    .slla-dashboard-table td,
+    .slla-logs-table th,
+    .slla-logs-table td {
         padding: 8px 10px;
         font-size: 12px;
     }
 
-    .slla-logs-filter-form {
+    .slla-logs-filter-form,
+    .slla-log-filters {
         flex-direction: column;
         align-items: flex-start;
     }
 
     .slla-logs-filter-form label,
     .slla-logs-filter-form select.slla-input,
-    .slla-filter-btn {
+    .slla-log-filters label,
+    .slla-log-filters select {
         width: 100%;
         margin-bottom: 10px;
     }
 
     .slla-clear-logs-form {
         width: 100%;
-    }
-
-    .slla-clear-btn {
-        width: 100%;
-    }
-
-    .slla-back-to-top {
-        bottom: 15px;
-        right: 15px;
-        padding: 8px 12px;
-        font-size: 12px;
     }
 
     /* Premium Page Responsive */
@@ -1183,4 +1187,6 @@
     .slla-premium-table .description {
         font-size: 10px;
     }
+
+    
 }

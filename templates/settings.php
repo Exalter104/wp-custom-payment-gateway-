@@ -16,6 +16,8 @@ if (isset($_POST['slla_reset_settings']) && check_admin_referer('slla_reset_sett
     update_option('slla_email_notifications', 0);
     update_option('slla_strong_password', 0);
     update_option('slla_enable_2fa', 0);
+    update_option('slla_ipstack_api_key', '');
+    update_option('slla_allowed_countries', array('PK'));
     ?>
 <div class="notice notice-success is-dismissible">
     <p><?php _e('Settings have been reset to default values.', 'simple-limit-login-attempts'); ?></p>
@@ -251,6 +253,70 @@ if (isset($_POST['slla_reset_settings']) && check_admin_referer('slla_reset_sett
                     <?php
                     }
                     ?>
+                </div>
+            </div>
+            <?php submit_button(__('Save Changes', 'simple-limit-login-attempts'), 'primary slla-submit-btn', 'submit', false); ?>
+        </form>
+
+        <!-- Geo-Blocking Settings -->
+        <h2><?php _e('Geo-Blocking Settings', 'simple-limit-login-attempts'); ?></h2>
+        <form method="post" action="options.php">
+            <?php settings_fields('slla_settings_group'); ?>
+            <div class="slla-settings-grid">
+                <!-- ipstack API Key -->
+                <div class="slla-setting-item">
+                    <label for="slla_ipstack_api_key"><?php _e('ipstack API Key', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Enter your ipstack API key to enable Geo-Blocking.', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <input type="text" name="slla_ipstack_api_key" id="slla_ipstack_api_key"
+                        value="<?php echo esc_attr(get_option('slla_ipstack_api_key', '')); ?>" size="40"
+                        class="slla-input" />
+                    <p class="description">
+                        <?php _e('Enter your ipstack API key. Get one from <a href="https://ipstack.com/" target="_blank">ipstack.com</a>.', 'simple-limit-login-attempts'); ?>
+                    </p>
+                </div>
+
+                <!-- Allowed Countries -->
+                <div class="slla-setting-item">
+                    <label for="slla_allowed_countries"><?php _e('Allowed Countries', 'simple-limit-login-attempts'); ?>
+                        <span class="slla-tooltip">
+                            <span class="dashicons dashicons-info-outline"></span>
+                            <span
+                                class="slla-tooltip-text"><?php _e('Select the countries allowed to login. Hold Ctrl (or Cmd) to select multiple countries.', 'simple-limit-login-attempts'); ?></span>
+                        </span>
+                    </label>
+                    <?php
+                    $value = get_option('slla_allowed_countries', array('PK'));
+                    $countries = array(
+                        'PK' => 'Pakistan',
+                        'US' => 'United States',
+                        'IN' => 'India',
+                        'GB' => 'United Kingdom',
+                        'CA' => 'Canada',
+                        'AU' => 'Australia',
+                        'DE' => 'Germany',
+                        'FR' => 'France',
+                        'CN' => 'China',
+                        'JP' => 'Japan',
+                        // Add more countries as needed
+                    );
+                    ?>
+                    <select name="slla_allowed_countries[]" id="slla_allowed_countries" multiple size="5"
+                        class="slla-input">
+                        <?php
+                        foreach ($countries as $code => $name) {
+                            $selected = in_array($code, $value) ? 'selected' : '';
+                            echo "<option value='{$code}' {$selected}>{$name}</option>";
+                        }
+                        ?>
+                    </select>
+                    <p class="description">
+                        <?php _e('Select the countries allowed to login. Hold Ctrl (or Cmd) to select multiple countries.', 'simple-limit-login-attempts'); ?>
+                    </p>
                 </div>
             </div>
             <?php submit_button(__('Save Changes', 'simple-limit-login-attempts'), 'primary slla-submit-btn', 'submit', false); ?>

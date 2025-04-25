@@ -7,11 +7,13 @@ class SLLA_Core {
     private $lockout;
     private $logger;
     private $admin;
+    private $notifications;
 
     public function __construct() {
         $this->lockout = new SLLA_Lockout( $this );
         $this->logger = new SLLA_Logger();
         $this->admin = new SLLA_Admin();
+        $this->notifications = new SLLA_Admin_Notifications( $this->admin );
 
         // Initialize Admin
         $this->admin->init();
@@ -44,8 +46,8 @@ class SLLA_Core {
         error_log( "Failed attempt for IP $ip: Attempt #$attempts" );
         error_log( "Transient set result for $transient_key: " . ( $result ? 'Success' : 'Failed' ) );
 
-        // Log the failed attempt in the database
-        $this->logger->log_failed_attempt( $username, $ip );
+        // Log the failed attempt in the database and send notifications
+        $this->notifications->log_failed_attempt( $username, $ip );
 
         $this->lockout->check_and_set_lockout( $ip );
     }

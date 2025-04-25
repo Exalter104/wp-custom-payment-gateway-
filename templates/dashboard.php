@@ -20,18 +20,19 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <span
                             class="slla-stat-label"><?php _e( 'Total Successful Logins', 'simple-limit-login-attempts' ); ?></span>
                         <span
-                            class="slla-stat-value"><?php echo esc_html( $this->get_total_successful_logins() ); ?></span>
+                            class="slla-stat-value"><?php echo esc_html( $admin->get_stats()->get_total_successful_logins() ); ?></span>
                     </div>
                     <div class="slla-stat">
                         <span
                             class="slla-stat-label"><?php _e( 'Total Lockouts', 'simple-limit-login-attempts' ); ?></span>
-                        <span class="slla-stat-value"><?php echo esc_html( $this->get_total_lockouts() ); ?></span>
+                        <span
+                            class="slla-stat-value"><?php echo esc_html( $admin->get_stats()->get_total_lockouts() ); ?></span>
                     </div>
                     <div class="slla-stat">
                         <span
                             class="slla-stat-label"><?php _e( 'Total Failed Attempts', 'simple-limit-login-attempts' ); ?></span>
                         <span
-                            class="slla-stat-value"><?php echo esc_html( $this->get_total_failed_attempts() ); ?></span>
+                            class="slla-stat-value"><?php echo esc_html( $admin->get_stats()->get_total_failed_attempts() ); ?></span>
                     </div>
                 </div>
             </div>
@@ -40,13 +41,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <!-- Failed Attempts Section -->
                 <div class="slla-card slla-failed-attempts">
                     <h2><?php _e( 'Failed Attempts', 'simple-limit-login-attempts' ); ?></h2>
-                    <?php $this->display_failed_attempts(); ?>
+                    <?php $admin->get_logs()->display_failed_attempts(); ?>
                 </div>
 
                 <!-- AI Insights Section (Free Feature) -->
-                <div class="slla-card slla-ai-insights">
+                <div class="slla-card slla-ai-ins slla-ai-insights">
                     <h2><?php _e( 'AI Insights (Free)', 'simple-limit-login-attempts' ); ?></h2>
-                    <?php $this->display_ai_insights(); ?>
+                    <?php $admin->get_insights()->display_ai_insights(); ?>
                 </div>
 
                 <!-- Security Checklist Section -->
@@ -58,13 +59,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <li>
                                 <input type="checkbox" name="slla_email_notifications" value="1"
                                     <?php checked( 1, get_option( 'slla_email_notifications', 0 ) ); ?>
-                                    <?php echo $this->is_premium_active() ? '' : 'disabled'; ?>>
+                                    <?php echo $admin->is_premium_active() ? '' : 'disabled'; ?>>
                                 <label><?php _e( 'Enable email notifications (Premium)', 'simple-limit-login-attempts' ); ?></label>
                             </li>
                             <li>
                                 <input type="checkbox" name="slla_strong_password" value="1"
                                     <?php checked( 1, get_option( 'slla_strong_password', 0 ) ); ?>
-                                    <?php echo $this->is_premium_active() ? '' : 'disabled'; ?>>
+                                    <?php echo $admin->is_premium_active() ? '' : 'disabled'; ?>>
                                 <label><?php _e( 'Implement strong password policies (Premium)', 'simple-limit-login-attempts' ); ?></label>
                             </li>
                             <li>
@@ -75,6 +76,47 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </ul>
                         <?php submit_button( __( 'Save Checklist', 'simple-limit-login-attempts' ), 'primary slla-submit-btn', 'submit', false ); ?>
                     </form>
+                </div>
+
+                <!-- Blocked Attempts (Geo-Blocking) Section -->
+                <div class="slla-card slla-blocked-attempts">
+                    <h2><?php _e( 'Blocked Attempts (Geo-Blocking)', 'simple-limit-login-attempts' ); ?></h2>
+                    <?php
+                    $blocked_attempts = get_option( 'slla_blocked_attempts', array() );
+                    if ( empty( $blocked_attempts ) ) {
+                        echo '<p>' . __( 'No blocked attempts yet.', 'simple-limit-login-attempts' ) . '</p>';
+                    } else {
+                        echo '<ul>';
+                        foreach ( $blocked_attempts as $attempt ) {
+                            echo '<li>';
+                            echo __( 'Blocked Attempt', 'simple-limit-login-attempts' ) . ' | ';
+                            echo __( 'Username: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['username'] ) . ' | ';
+                            echo __( 'IP: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['ip'] ) . ' | ';
+                            echo __( 'Country: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['country'] ) . ' | ';
+                            echo __( 'Time: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['time'] );
+                            echo '</li>';
+                        }
+                        echo '</ul>';
+                    }
+                    ?>
+                </div>
+
+                <!-- Twilio SMS Usage Section -->
+                <div class="slla-card slla-twilio-usage">
+                    <h2><?php _e( 'Twilio SMS Usage', 'simple-limit-login-attempts' ); ?></h2>
+                    <?php
+                    $twilio_usage = SLLA_Twilio::get_twilio_usage();
+                    if ( isset( $twilio_usage['error'] ) ) {
+                        echo '<p style="color: red;">' . esc_html( $twilio_usage['error'] ) . '</p>';
+                    } else {
+                        echo '<p>' . sprintf( __( 'Used: %d messages', 'simple-limit-login-attempts' ), $twilio_usage['used'] ) . '</p>';
+                        echo '<p>' . sprintf( __( 'Remaining: %d messages', 'simple-limit-login-attempts' ), $twilio_usage['remaining'] ) . '</p>';
+                        echo '<p>' . sprintf( __( 'Daily Limit: %d messages', 'simple-limit-login-attempts' ), $twilio_usage['limit'] ) . '</p>';
+                        if ( $twilio_usage['remaining'] == 0 ) {
+                            echo '<p style="color: red;">' . __( 'SMS limit exceeded. 2FA codes are being sent via email.', 'simple-limit-login-attempts' ) . '</p>';
+                        }
+                    }
+                    ?>
                 </div>
 
                 <!-- Upgrade to Premium Section -->
@@ -94,7 +136,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="slla-card slla-real-time-notifications">
                 <h2><?php _e( 'Real-Time Notifications', 'simple-limit-login-attempts' ); ?></h2>
                 <?php
-                $recent_attempts = $this->get_recent_failed_attempts( 5 );
+                $recent_attempts = $admin->get_logs()->get_recent_failed_attempts( 5 );
                 if ( empty( $recent_attempts ) ) {
                     ?>
                 <p><?php _e( 'No recent failed login attempts.', 'simple-limit-login-attempts' ); ?></p>
@@ -118,13 +160,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <?php
                 }
 
-                if ( ! $this->is_premium_active() ) {
+                if ( ! $admin->is_premium_active() ) {
                     ?>
                 <p class="slla-premium-notice">
                     <?php _e( 'Upgrade to Premium for email and SMS notifications!', 'simple-limit-login-attempts' ); ?>
-                    <a href="<?php echo admin_url( 'admin.php?page=slla-premium' ); ?>" class="slla-upgrade-btn">
-                        <?php _e( 'Upgrade Now', 'simple-limit-login-attempts' ); ?>
-                    </a>
+                </p>
+                <a href="<?php echo admin_url( 'admin.php?page=slla-premium' ); ?>" class="slla-upgrade-btn">
+                    <?php _e( 'Upgrade Now', 'simple-limit-login-attempts' ); ?>
+                </a>
                 </p>
                 <?php
                 }
@@ -132,6 +175,4 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>
