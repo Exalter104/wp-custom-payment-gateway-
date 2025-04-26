@@ -36,7 +36,8 @@ $required_files = [
     'includes/database.php' => 'Database',
     'includes/helpers/class-slla-helpers.php' => 'Helpers',
     'includes/class-slla-2fa.php' => '2FA',
-    'includes/class-slla-geoblock.php' => 'GeoBlock', // Added GeoBlock class
+    'includes/class-slla-geoblock.php' => 'GeoBlock',
+    'includes/class-slla-suspicious-behavior.php' => 'Suspicious Behavior', // Added Suspicious Behavior class
 ];
 
 foreach ( $required_files as $file => $name ) {
@@ -46,6 +47,8 @@ foreach ( $required_files as $file => $name ) {
             new SLLA_2FA();
         } elseif ( $file === 'includes/class-slla-geoblock.php' ) {
             new SLLA_GeoBlock(); // Initialize GeoBlock class
+        } elseif ( $file === 'includes/class-slla-suspicious-behavior.php' ) {
+            new SLLA_Suspicious_Behavior(); // Initialize Suspicious Behavior class
         }
     } else {
         error_log( "Simple Limit Login Attempts: {$name} file missing." );
@@ -60,6 +63,7 @@ foreach ( $required_files as $file => $name ) {
 // ENQUEUE ADMIN STYLES AND SCRIPTS
 $css_version = SLLA_VERSION;
 $js_version = SLLA_VERSION;
+
 function slla_enqueue_admin_styles() {
     $screen = get_current_screen();
     if ( strpos( $screen->id, 'slla-' ) !== false ) {
@@ -69,6 +73,8 @@ function slla_enqueue_admin_styles() {
         wp_enqueue_style( 'dashicons' );
         $js_version = SLLA_VERSION . '.' . time();
         wp_enqueue_script( 'slla-admin-js', SLLA_PLUGIN_URL . '/assets/js/admin-settings.js', array( 'jquery' ), $js_version, true );
+        // Enqueue Chart.js for the dashboard chart
+        wp_enqueue_script( 'chartjs', 'https://cdn.jsdelivr.net/npm/chart.js', array(), '4.4.3', true );
         wp_localize_script( 'slla-admin-js', 'sllaSettings', array(
             'defaultErrorMessage' => __( 'Custom error message for failed login attempts.', 'simple-limit-login-attempts' ),
             'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -83,10 +89,8 @@ add_action('wp_login_failed', function($username) {
     $logger = new SLLA_Logger();
     $lockout = new SLLA_Lockout(new SLLA_Core());
     $ip = $_SERVER['REMOTE_ADDR'];
-
     // Log the failed attempt
     $logger->log_failed_attempt($username, $ip);
-
     // Increment failed attempts count
     $transient_key = 'slla_attempts_' . md5($ip);
     $attempts = get_transient($transient_key);
@@ -94,10 +98,8 @@ add_action('wp_login_failed', function($username) {
         $attempts = 0;
     }
     set_transient($transient_key, $attempts + 1, DAY_IN_SECONDS);
-
     // Check and set lockout
     $lockout->check_and_set_lockout($ip);
-
     // Trigger Twilio SMS notification
     SLLA_Twilio::on_failed_login_attempt($username);
 });
@@ -118,14 +120,12 @@ add_action('plugins_loaded', 'slla_init');
 
 // DEACTIVATION HOOK
 register_deactivation_hook(__FILE__, 'slla_remove_activation_notice_flag');
-
 function slla_remove_activation_notice_flag() {
     delete_option('slla_plugin_activated_notice');
 }
 
 // UNINSTALL HOOK
 register_uninstall_hook(__FILE__, 'slla_uninstall');
-
 function slla_uninstall() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'slla_logs';
@@ -152,6 +152,7 @@ function slla_uninstall() {
         'slla_ipstack_api_key', // Added for Geo-Blocking
         'slla_allowed_countries', // Added for Geo-Blocking
         'slla_blocked_attempts', // Added for Geo-Blocking logs
+        'slla_failed_attempts', // Added for Suspicious Behavior logs
     ];
     foreach ($options as $option) {
         delete_option($option);

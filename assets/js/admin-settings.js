@@ -1,6 +1,39 @@
 jQuery(document).ready(function($) {
     console.log('SLLA Admin Settings JS Loaded');
 
+    // Tabbed Interface Logic
+    $('.slla-tab-nav button').on('click', function() {
+        const $this = $(this);
+        const tabId = $this.data('tab');
+
+        // Update active tab
+        $('.slla-tab-nav button').removeClass('active');
+        $this.addClass('active');
+
+        // Show corresponding tab content
+        $('.slla-tab-content').removeClass('active');
+        $('#' + tabId).addClass('active');
+    });
+
+    // Show the first tab by default
+    $('.slla-tab-nav button:first-child').trigger('click');
+
+    // Getting Started Modal
+    $('.slla-getting-started-btn').on('click', function() {
+        $('.slla-getting-started-modal').fadeIn();
+    });
+
+    $('.slla-close-modal').on('click', function() {
+        $('.slla-getting-started-modal').fadeOut();
+    });
+
+    // Close modal when clicking outside
+    $(window).on('click', function(e) {
+        if ($(e.target).hasClass('slla-getting-started-modal')) {
+            $('.slla-getting-started-modal').fadeOut();
+        }
+    });
+
     // Real-time Error Message Preview for Custom Error Message
     $('#slla_custom_error_message').on('input', function() {
         const defaultMessage = sllaSettings.defaultErrorMessage;
@@ -27,7 +60,7 @@ jQuery(document).ready(function($) {
 
         const $errorDiv = $this.siblings('.slla-ip-error');
         if (hasError) {
-            $errorDiv.show();
+            $errorDiv.show().text('Invalid IP address detected. Please enter valid IPs (e.g., 192.168.1.1).');
             $this.addClass('slla-input-error');
         } else {
             $errorDiv.hide();
@@ -54,6 +87,16 @@ jQuery(document).ready(function($) {
         }
     });
 
+    // Premium Feature Validation (e.g., Email Notifications, 2FA)
+    $('.slla-premium-checkbox').on('change', function(e) {
+        const $this = $(this);
+        if ($this.prop('disabled')) {
+            e.preventDefault();
+            alert('This is a premium feature. Please upgrade to unlock it.');
+            window.location.href = sllaSettings.premiumPageUrl; // Redirect to premium page
+        }
+    });
+
     // Logs Page Enhancements
     // 1. Confirmation Prompt for Clearing Logs
     $('.slla-clear-btn').on('click', function(e) {
@@ -73,9 +116,8 @@ jQuery(document).ready(function($) {
     if ($('.slla-logs').length) {
         // Append Back to Top button
         $('body').append('<button class="slla-back-to-top">⬆ Back to Top</button>');
-
         const $backToTopBtn = $('.slla-back-to-top');
-        
+
         // Show/hide button based on scroll position
         $(window).on('scroll', function() {
             if ($(window).scrollTop() > 300) {
@@ -100,31 +142,31 @@ jQuery(document).ready(function($) {
         $('#slla_setup_code').focus();
     });
 
-// Real-Time Notifications: Fetch and Update
-if ($('.slla-real-time-notifications').length) {
-    function fetchNotifications() {
-        $.ajax({
-            url: sllaSettings.ajaxUrl,
-            method: 'POST',
-            data: {
-                action: 'slla_get_recent_failed_attempts',
-                nonce: sllaSettings.nonce
-            },
-            success: function(response) {
-                if (response.success) {
-                    $('.slla-notification-list').html(response.data.html);
+    // Real-Time Notifications: Fetch and Update
+    if ($('.slla-real-time-notifications').length) {
+        function fetchNotifications() {
+            $.ajax({
+                url: sllaSettings.ajaxUrl,
+                method: 'POST',
+                data: {
+                    action: 'slla_get_recent_failed_attempts',
+                    nonce: sllaSettings.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('.slla-notification-list').html(response.data.html);
+                    }
+                },
+                error: function() {
+                    console.log('Error fetching notifications.');
                 }
-            },
-            error: function() {
-                console.log('Error fetching notifications.');
-            }
-        });
+            });
+        }
+
+        // Initial fetch
+        fetchNotifications();
+
+        // Poll every 30 seconds
+        setInterval(fetchNotifications, 30000);
     }
-
-    // Initial fetch
-    fetchNotifications();
-
-    // Poll every 30 seconds
-    setInterval(fetchNotifications, 30000);
-}
 });

@@ -112,4 +112,29 @@ class SLLA_Logger {
     public function log_failed_attempt($username, $ip) {
         $this->log_event('failed_attempt', $username, '');
     }
+
+
+    public function get_failed_attempts_trend( $days = 7 ) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'slla_logs';
+
+        $trend = array();
+        $current_date = current_time( 'mysql' );
+
+        // Loop through the last $days days
+        for ( $i = $days - 1; $i >= 0; $i-- ) {
+            $date = date( 'Y-m-d', strtotime( "-$i days", strtotime( $current_date ) ) );
+            $count = $wpdb->get_var( $wpdb->prepare(
+                "SELECT COUNT(*) FROM $table_name WHERE event_type = 'failed_attempt' AND DATE(time) = %s",
+                $date
+            ) );
+
+            $trend[] = array(
+                'date'  => date( 'M d', strtotime( $date ) ), // Format: "Apr 26"
+                'count' => (int) $count,
+            );
+        }
+
+        return $trend;
+    }
 }

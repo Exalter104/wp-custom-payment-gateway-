@@ -78,28 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </form>
                 </div>
 
-                <!-- Blocked Attempts (Geo-Blocking) Section -->
-                <div class="slla-card slla-blocked-attempts">
-                    <h2><?php _e( 'Blocked Attempts (Geo-Blocking)', 'simple-limit-login-attempts' ); ?></h2>
-                    <?php
-                    $blocked_attempts = get_option( 'slla_blocked_attempts', array() );
-                    if ( empty( $blocked_attempts ) ) {
-                        echo '<p>' . __( 'No blocked attempts yet.', 'simple-limit-login-attempts' ) . '</p>';
-                    } else {
-                        echo '<ul>';
-                        foreach ( $blocked_attempts as $attempt ) {
-                            echo '<li>';
-                            echo __( 'Blocked Attempt', 'simple-limit-login-attempts' ) . ' | ';
-                            echo __( 'Username: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['username'] ) . ' | ';
-                            echo __( 'IP: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['ip'] ) . ' | ';
-                            echo __( 'Country: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['country'] ) . ' | ';
-                            echo __( 'Time: ', 'simple-limit-login-attempts' ) . esc_html( $attempt['time'] );
-                            echo '</li>';
-                        }
-                        echo '</ul>';
-                    }
-                    ?>
-                </div>
+
 
                 <!-- Twilio SMS Usage Section -->
                 <div class="slla-card slla-twilio-usage">
@@ -107,7 +86,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php
                     $twilio_usage = SLLA_Twilio::get_twilio_usage();
                     if ( isset( $twilio_usage['error'] ) ) {
-                        echo '<p style="color: red;">' . esc_html( $twilio_usage['error'] ) . '</p>';
+                        // Allow HTML in the error message (e.g., for links)
+                        echo '<p style="color: red;">' . wp_kses_post( $twilio_usage['error'] ) . '</p>';
                     } else {
                         echo '<p>' . sprintf( __( 'Used: %d messages', 'simple-limit-login-attempts' ), $twilio_usage['used'] ) . '</p>';
                         echo '<p>' . sprintf( __( 'Remaining: %d messages', 'simple-limit-login-attempts' ), $twilio_usage['remaining'] ) . '</p>';
@@ -119,14 +99,6 @@ if ( ! defined( 'ABSPATH' ) ) {
                     ?>
                 </div>
 
-                <!-- Upgrade to Premium Section -->
-                <div class="slla-card slla-premium-promotion">
-                    <h2><?php _e( 'Upgrade to Premium', 'simple-limit-login-attempts' ); ?></h2>
-                    <p><?php _e( 'Unlock advanced features like email notifications, IP intelligence, country blocking, and more!', 'simple-limit-login-attempts' ); ?>
-                    </p>
-                    <a href="<?php echo admin_url( 'admin.php?page=slla-premium' ); ?>"
-                        class="slla-upgrade-btn"><?php _e( 'Get Started', 'simple-limit-login-attempts' ); ?></a>
-                </div>
             </div>
         </div>
 
@@ -173,6 +145,63 @@ if ( ! defined( 'ABSPATH' ) ) {
                 }
                 ?>
             </div>
+
+            <!-- Blocked Attempts (Geo-Blocking) Section -->
+            <div class="slla-card slla-blocked-attempts">
+                <h2><?php _e( 'Blocked Attempts (Geo-Blocking)', 'simple-limit-login-attempts' ); ?></h2>
+                <?php
+                $blocked_attempts = get_option( 'slla_blocked_attempts', array() );
+                if ( empty( $blocked_attempts ) ) {
+                    ?>
+                <p><?php _e( 'No blocked attempts yet.', 'simple-limit-login-attempts' ); ?></p>
+                <?php
+                } else {
+                    ?>
+                <ul class="slla-notification-list">
+                    <?php foreach ( $blocked_attempts as $index => $attempt ) : ?>
+                    <li class="slla-notification-card">
+                        <div class="slla-notification-row">
+                            <span
+                                class="slla-notification-username"><?php echo esc_html( $attempt['username'] ); ?></span>
+                            <span class="slla-notification-ip"><?php echo esc_html( 'IP: ' . $attempt['ip'] ); ?></span>
+                            <span
+                                class="slla-notification-country"><?php echo esc_html( 'Country: ' . $attempt['country'] ); ?></span>
+                            <span class="slla-notification-time"><?php echo esc_html( $attempt['time'] ); ?></span>
+                        </div>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php
+                }
+                ?>
+            </div>
+
+            <!-- Inline CSS for Scrollable Lists -->
+            <style>
+            .slla-notification-list {
+                max-height: 300px;
+                overflow-y: auto;
+                padding-right: 10px;
+            }
+
+            .slla-notification-list::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .slla-notification-list::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 10px;
+            }
+
+            .slla-notification-list::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 10px;
+            }
+
+            .slla-notification-list::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+            </style>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ class SLLA_Admin_Settings {
     }
 
     public function register_settings() {
-        // General Settings
+        // General Settings (Settings Page)
         register_setting( 'slla_settings_group', 'slla_max_attempts', array(
             'default' => 5,
             'sanitize_callback' => array( $this, 'sanitize_max_attempts' )
@@ -42,24 +42,84 @@ class SLLA_Admin_Settings {
             'sanitize_callback' => 'absint'
         ));
 
+        // Security Checklist Settings (Settings Page)
+        register_setting( 'slla_settings_group', 'slla_enable_auto_updates', array(
+            'default' => 0,
+            'sanitize_callback' => 'absint'
+        ));
+        register_setting( 'slla_settings_group', 'slla_email_notifications', array(
+            'default' => 0,
+            'sanitize_callback' => 'absint'
+        ));
+        register_setting( 'slla_settings_group', 'slla_strong_password', array(
+            'default' => 0,
+            'sanitize_callback' => 'absint'
+        ));
+        register_setting( 'slla_settings_group', 'slla_enable_2fa', array(
+            'type' => 'integer',
+            'sanitize_callback' => 'absint',
+            'default' => 0,
+        ));
+
+        // Notifications Settings (Notifications Page)
         register_setting( 'slla_notifications_group', 'slla_twilio_account_sid', array(
-            'type'              => 'string',
+            'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default' => '',
         ));
-
         register_setting( 'slla_notifications_group', 'slla_twilio_auth_token', array(
-            'type'              => 'string',
+            'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default' => '',
         ));
-
         register_setting( 'slla_notifications_group', 'slla_twilio_phone_number', array(
-            'type'              => 'string',
+            'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default' => '',
+        ));
+        register_setting( 'slla_notifications_group', 'slla_enable_email_notifications', array(
+            'type' => 'integer',
+            'sanitize_callback' => 'absint',
+            'default' => 0,
+        ));
+        register_setting( 'slla_notifications_group', 'slla_enable_sms_notifications', array(
+            'type' => 'integer',
+            'sanitize_callback' => 'absint',
+            'default' => 0,
+        ));
+        register_setting( 'slla_notifications_group', 'slla_admin_phone_number', array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => '',
         ));
 
+        // Geo-Blocking Settings (Geo-Blocking Page)
+        register_setting( 
+            'slla_geoblocking_group', // Separate group for Geo-Blocking
+            'slla_ipstack_api_key', 
+            array( 
+                'sanitize_callback' => 'sanitize_text_field',
+                'default' => ''
+            ) 
+        );
+        register_setting( 
+            'slla_geoblocking_group', // Separate group for Geo-Blocking
+            'slla_allowed_countries', 
+            array( 
+                'sanitize_callback' => array( $this, 'sanitize_allowed_countries' ),
+                'default' => array( 'PK' )
+            ) 
+        );
+
+        // Premium Settings (Settings Page)
+        register_setting( 'slla_settings_group', 'slla_setup_code', array(
+            'sanitize_callback' => 'sanitize_text_field'
+        ));
+        register_setting( 'slla_settings_group', 'slla_block_countries', array(
+            'sanitize_callback' => array( $this, 'sanitize_textarea' )
+        ));
+
+        // General Settings Section
         add_settings_section(
             'slla_general_settings',
             __( 'General Settings', 'simple-limit-login-attempts' ),
@@ -115,16 +175,7 @@ class SLLA_Admin_Settings {
             'slla_general_settings'
         );
 
-        // Security Checklist Settings
-        register_setting( 'slla_security_checklist_group', 'slla_enable_auto_updates' );
-        register_setting( 'slla_security_checklist_group', 'slla_email_notifications' ); // Premium
-        register_setting( 'slla_security_checklist_group', 'slla_strong_password' ); // Premium
-        register_setting( 'slla_security_checklist_group', 'slla_enable_2fa', array(
-            'type' => 'integer',
-            'sanitize_callback' => 'absint',
-            'default' => 0,
-        ));
-
+        // Security Checklist Section
         add_settings_section(
             'slla_security_checklist',
             __( 'Login Security Checklist', 'simple-limit-login-attempts' ),
@@ -164,14 +215,7 @@ class SLLA_Admin_Settings {
             'slla_security_checklist'
         );
 
-        // Premium Settings
-        register_setting( 'slla_premium_group', 'slla_setup_code', array(
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        register_setting( 'slla_premium_group', 'slla_block_countries', array(
-            'sanitize_callback' => array( $this, 'sanitize_textarea' )
-        ));
-
+        // Premium Settings Section
         add_settings_section(
             'slla_premium_settings',
             __( 'Premium Settings', 'simple-limit-login-attempts' ),
@@ -194,25 +238,6 @@ class SLLA_Admin_Settings {
             'slla-premium-settings',
             'slla_premium_settings'
         );
-
-        // New Settings for Email and SMS Notifications
-        register_setting( 'slla_notifications_group', 'slla_enable_email_notifications', array(
-            'type'              => 'integer',
-            'sanitize_callback' => 'absint',
-            'default'           => 0,
-        ));
-
-        register_setting( 'slla_notifications_group', 'slla_enable_sms_notifications', array(
-            'type'              => 'integer',
-            'sanitize_callback' => 'absint',
-            'default'           => 0,
-        ));
-
-        register_setting( 'slla_notifications_group', 'slla_admin_phone_number', array(
-            'type'              => 'string',
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
-        ));
     }
 
     public function general_settings_callback() {
@@ -324,5 +349,27 @@ class SLLA_Admin_Settings {
 
     public function sanitize_textarea( $value ) {
         return sanitize_textarea_field( $value );
+    }
+
+    public function sanitize_allowed_countries( $value ) {
+        // If no value is provided, return the default (Pakistan)
+        if ( empty( $value ) || ! is_array( $value ) ) {
+            return array( 'PK' );
+        }
+
+        // Valid country codes
+        $valid_countries = array( 'PK', 'US', 'IN', 'GB', 'CA', 'AU', 'DE', 'FR', 'CN', 'JP' );
+
+        // Sanitize each country code and ensure it's valid
+        $sanitized = array();
+        foreach ( $value as $country ) {
+            $country = sanitize_text_field( $country );
+            if ( in_array( $country, $valid_countries ) ) {
+                $sanitized[] = $country;
+            }
+        }
+
+        // If no valid countries after sanitization, return default
+        return empty( $sanitized ) ? array( 'PK' ) : $sanitized;
     }
 }

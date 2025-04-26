@@ -1,4 +1,5 @@
 <?php
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -8,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Helper functions for the Simple Limit Login Attempts plugin.
  */
 class SLLA_Helpers {
+
     /**
      * Render the submenu navigation.
      */
@@ -16,11 +18,15 @@ class SLLA_Helpers {
         $parent_slug = 'slla-dashboard';
         $current_page = isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : 'slla-dashboard';
 
-        // Debug: Check if submenu items are available
+        // Check if submenu items are available
         if ( ! isset( $submenu[$parent_slug] ) ) {
             echo '<p>No submenu items found for ' . esc_html( $parent_slug ) . '</p>';
             return;
         }
+
+        // Check if premium is active
+        $admin = new SLLA_Admin();
+        $is_premium = $admin->is_premium_active();
 
         ?>
 <div class="slla-submenu">
@@ -28,6 +34,12 @@ class SLLA_Helpers {
     <?php
                 $slug = $item[2];
                 $title = $item[0];
+
+                // Skip premium pages in free version
+                if ( ! $is_premium && in_array( $slug, [ 'slla-geo-blocking', 'slla-notifications' ] ) ) {
+                    continue;
+                }
+
                 $class = ( $current_page === $slug ) ? 'slla-submenu-item active' : 'slla-submenu-item';
                 ?>
     <a href="<?php echo esc_url( admin_url( "admin.php?page=$slug" ) ); ?>" class="<?php echo esc_attr( $class ); ?>">

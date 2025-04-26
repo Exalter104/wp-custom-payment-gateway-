@@ -46,6 +46,15 @@ class SLLA_Admin_Pages {
 
         add_submenu_page(
             'slla-dashboard',
+            __( 'Geo-Blocking', 'simple-limit-login-attempts' ),
+            __( 'Geo-Blocking', 'simple-limit-login-attempts' ),
+            'manage_options',
+            'slla-geoblocking',
+            array( $this, 'render_geoblocking_page' )
+        );
+
+        add_submenu_page(
+            'slla-dashboard',
             __( 'Logs', 'simple-limit-login-attempts' ),
             __( 'Logs', 'simple-limit-login-attempts' ),
             'manage_options',
@@ -89,6 +98,11 @@ class SLLA_Admin_Pages {
     public function render_settings_page() {
         $admin = $this->admin;
         require_once SLLA_PLUGIN_DIR . 'templates/settings.php';
+    }
+
+    public function render_geoblocking_page() {
+        $admin = $this->admin;
+        require_once SLLA_PLUGIN_DIR . 'templates/geoblocking.php';
     }
 
     public function render_logs_page() {

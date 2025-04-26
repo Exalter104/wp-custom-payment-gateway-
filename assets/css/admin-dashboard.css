@@ -7,16 +7,18 @@
 
 /* General Dashboard Styling */
 .slla-dashboard-wrap {
-    background: #f5f7fa;
+    background: #F5F8FA; /* Light background same as Limit Login Attempts Reloaded */
     padding: 30px;
     min-height: 100vh;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333333;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1F2A44; /* Darker text for better contrast */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Modern Wrapper Styling */
 .slla-modern-wrap {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecef 100%);
+    background: #F5F8FA; /* Removed gradient, keeping it clean like the snapshot */
 }
 
 /* Remove Background Animation */
@@ -24,78 +26,96 @@
     display: none;
 }
 
-/* Horizontal Submenu Styling */
+/* Submenu Styling - Fixed at Top */
 .slla-submenu {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 30px;
-    background: #ffffff;
+    background: #FFFFFF;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: none;
+    overflow-x: auto;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: 30px;
 }
 
 .slla-submenu a {
-    color: #666666;
+    color: #6B7280; /* Gray text for inactive tabs */
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     padding: 8px 16px;
-    transition: color 0.3s ease, background 0.3s ease;
+    transition: all 0.3s ease;
     border-radius: 6px;
+    margin-right: 8px;
 }
 
 .slla-submenu a:hover,
 .slla-submenu a.current {
-    color: #f5a623;
-    background: #fff5e0;
+    color: #1F2A44; /* Darker text for active/hover */
+    background: #E6F0FA; /* Light blue background for active tab */
 }
 
-/* Two-Column Layout */
+/* Main Dashboard Container */
 .slla-dashboard-container {
     display: flex;
     gap: 30px;
     flex-wrap: wrap;
+    flex: 1;
 }
 
+/* Main Content Area */
 .slla-main-content {
-    flex: 1;
+    flex: 3;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 /* Sidebar (Right Column) */
 .slla-sidebar {
-    width: 400px;
-    min-width: 400px;
+    flex: 1;
+    min-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Responsive Design for Layout */
+@media (max-width: 1024px) {
+    .slla-dashboard-container {
+        flex-direction: column;
+    }
+
+    .slla-main-content,
     .slla-sidebar {
         width: 100%;
         min-width: 0;
     }
 }
 
-/* Grid Layout */
+/* Grid Layout for Cards */
 .slla-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px; /* Reduced gap for a tighter look like the snapshot */
 }
 
 /* Card Styling */
 .slla-card {
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0e0e0;
-    padding: 25px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
-    animation-delay: calc(var(--delay) * 0.2s);
+    background: #FFFFFF;
+    border-radius: 8px; /* Slightly smaller radius for a cleaner look */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+    animation: fadeIn 0.6s ease forwards;
+    animation-delay: calc(var(--delay) * 0.15s);
 }
 
 .slla-card:nth-child(1) { --delay: 1; }
@@ -103,73 +123,73 @@
 .slla-card:nth-child(3) { --delay: 3; }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .slla-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Modern Card Styling */
 .slla-modern-card {
-    background: linear-gradient(145deg, #ffffff, #f9f9f9);
-    border: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.05);
-    border-radius: 15px;
-    padding: 30px;
+    background: #FFFFFF; /* Removed gradient, keeping it clean */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
 }
 
 /* Heading Styling */
 .slla-dashboard-wrap h1 {
-    color: #333333;
-    font-size: 28px;
+    color: #1F2A44;
+    font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
-    text-transform: none;
-    letter-spacing: normal;
+    letter-spacing: -0.5px;
+    order: -1;
 }
+
 .slla-insights-card {
-    border: 1px solid #e0e0e0;
+    border: none;
     transition: box-shadow 0.3s ease;
 }
+
 .slla-insights-card:hover {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-insights-card li strong {
-    color: #f5a623; /* Yellow color jo aapke theme ke saath match karta hai */
+    color: #3B82F6; /* Blue color for emphasis, matching the snapshot */
 }
+
 .slla-insights-card li::before {
     content: "🔍";
-    margin-right: 5px;
+    margin-right: 6px;
 }
+
 .slla-title-modern {
-    background: linear-gradient(to right, #f5a623, #e69500);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 32px;
-    margin-bottom: 30px;
+    color: #1F2A44; /* Removed gradient text, keeping it simple */
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .slla-dashboard-wrap h2 {
-    color: #333333;
-    font-size: 20px;
+    color: #1F2A44;
+    font-size: 18px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
 }
 
 /* Modern Title Styling */
 .slla-modern-title {
-    font-size: 24px;
-    color: #333333;
+    font-size: 18px;
+    color: #1F2A44;
     position: relative;
-    padding-bottom: 10px;
-    margin-bottom: 30px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
 }
 
 .slla-modern-title::after {
@@ -177,72 +197,71 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(to right, #f5a623, #e69500);
-    border-radius: 2px;
+    width: 60px;
+    height: 4px;
+    background: #3B82F6; /* Blue underline, matching the snapshot */
+    border-radius: 3px;
 }
 
 .slla-title-icon {
-    color: #f5a623;
-    margin-right: 10px;
+    color: #3B82F6; /* Blue icon color */
+    margin-right: 12px;
 }
 
 /* Quick Stats Styling */
 .slla-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
 }
 
 .slla-modern-stats-grid {
-    gap: 30px;
+    gap: 20px;
 }
 
 .slla-stat {
     text-align: center;
     padding: 20px;
-    background: #ffffff;
+    background: #FFFFFF;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
 .slla-stat:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-modern-stat {
-    background: linear-gradient(145deg, #f9f9f9, #ffffff);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    border: none;
-    padding: 25px;
-    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .slla-stat-icon {
     font-size: 24px;
-    color: #f5a623;
+    color: #3B82F6; /* Blue icon color */
 }
 
 .slla-stat-label {
     display: block;
-    font-size: 13px;
-    color: #666666;
-    margin-bottom: 6px;
+    font-size: 12px;
+    color: #6B7280;
+    margin-bottom: 8px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .slla-stat-value {
     display: block;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 600;
-    color: #f5a623;
+    color: #1F2A44;
 }
 
 /* Circular Indicator for Failed Attempts */
@@ -250,34 +269,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
-    color: #ffffff;
-    font-size: 26px;
+    width: 80px;
+    height: 80px;
+    color: #FFFFFF;
+    font-size: 24px;
     font-weight: bold;
     border-radius: 50%;
-    margin: 0 auto 15px auto;
+    margin: 0 auto 12px auto;
     transition: transform 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .slla-failed-attempts-circle:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
-.slla-failed-attempts-low { background: linear-gradient(145deg, #207532, #1a5f2a); }
-.slla-failed-attempts-medium { background: linear-gradient(145deg, #f5a623, #e69500); }
-.slla-failed-attempts-high { background: linear-gradient(145deg, #ff6f61, #e65a50); }
+.slla-failed-attempts-low { background: #10B981; } /* Green */
+.slla-failed-attempts-medium { background: #F59E0B; } /* Yellow */
+.slla-failed-attempts-high { background: #EF4444; } /* Red */
 
 /* Failed Attempts Section */
 .slla-failed-attempts {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .slla-failed-attempts-text {
     text-align: center;
-    color: #666666;
-    font-size: 13px;
+    color: #6B7280;
+    font-size: 14px;
     font-weight: 400;
 }
 
@@ -295,16 +314,16 @@
 .slla-modern-btn {
     display: inline-block;
     padding: 10px 20px;
-    background: linear-gradient(90deg, #f5a623, #e69500);
-    color: #ffffff;
+    background: #F5A623; /* Orange button, matching the snapshot */
+    color: #FFFFFF;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 6px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     line-height: 1.5;
 }
 
@@ -314,9 +333,8 @@
 .slla-filter-btn:hover,
 .slla-dashboard-wrap button.button:hover,
 .slla-modern-btn:hover {
-    background: linear-gradient(90deg, #e69500, #d58500);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: #D97706; /* Darker orange on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-view-more-btn:active,
@@ -325,8 +343,7 @@
 .slla-filter-btn:active,
 .slla-dashboard-wrap button.button:active,
 .slla-modern-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Destructive Action Buttons (Reset, Clear) */
@@ -334,80 +351,78 @@
 .slla-clear-btn {
     display: inline-block;
     padding: 10px 20px;
-    background: linear-gradient(90deg, #ff6f61, #e65a50);
-    color: #ffffff;
+    background: #EF4444; /* Red for destructive actions */
+    color: #FFFFFF;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 6px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     line-height: 1.5;
 }
 
 .slla-reset-btn:hover,
 .slla-clear-btn:hover {
-    background: linear-gradient(90deg, #e65a50, #d54a40);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: #DC2626; /* Darker red on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-reset-btn:active,
 .slla-clear-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Security Checklist Styling */
 .slla-security-checklist {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .slla-security-checklist ul,
 .slla-modern-list {
     list-style: none;
     padding: 0;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .slla-security-checklist li,
 .slla-modern-list-item {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
     transition: background 0.3s ease;
-    background: #f9f9f9;
+    background: #F9FAFB;
 }
 
 .slla-security-checklist li:hover,
 .slla-modern-list-item:hover {
-    background: #fff5e0;
+    background: #E6F0FA; /* Light blue on hover */
 }
 
 .slla-security-checklist input[type="checkbox"],
 .slla-modern-list-item input[type="checkbox"] {
-    margin-right: 12px;
-    width: 18px;
-    height: 18px;
-    accent-color: #f5a623;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    accent-color: #3B82F6; /* Blue checkbox color */
 }
 
 .slla-security-checklist label,
 .slla-modern-list-item label {
     font-size: 14px;
-    color: #333333;
+    color: #1F2A44;
     font-weight: 500;
 }
 
 .slla-security-checklist .description,
 .slla-modern-list-item .description {
     font-size: 12px;
-    color: #666666;
-    margin-top: 5px;
+    color: #6B7280;
+    margin-top: 6px;
     margin-left: 30px;
 }
 
@@ -420,12 +435,15 @@
 /* Premium Promotion Styling */
 .slla-premium-promotion {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
+    background: #E6F0FA; /* Light blue background like the snapshot */
+    border-radius: 8px;
+    padding: 20px;
 }
 
 /* AI Insights Section */
 .slla-ai-insights {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .slla-ai-insights ul {
@@ -434,15 +452,15 @@
 }
 
 .slla-ai-insights li {
-    margin-bottom: 15px;
-    padding: 12px;
+    margin-bottom: 12px;
+    padding: 10px;
     border-radius: 8px;
-    background: #f9f9f9;
+    background: #F9FAFB;
     transition: background 0.3s ease;
 }
 
 .slla-ai-insights li:hover {
-    background: #fff5e0;
+    background: #E6F0FA;
 }
 
 /* Real-Time Notifications Section */
@@ -459,74 +477,73 @@
 .slla-modern-notification-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .slla-notification-card {
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 10px 15px;
+    background: #F9FAFB;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 15px;
     transition: background 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-modern-notification-card {
-    background: linear-gradient(145deg, #ffffff, #f9f9f9);
-    border: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    padding: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    transition: box-shadow 0.3s ease;
 }
 
 .slla-modern-notification-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-notification-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     flex-wrap: wrap;
 }
 
 .slla-notification-message {
     font-size: 14px;
-    color: #333333;
+    color: #1F2A44;
     font-weight: 500;
     margin-right: 10px;
 }
 
 .slla-notification-username {
     font-size: 14px;
-    color: #f5a623;
+    color: #3B82F6; /* Blue username color */
     font-weight: 500;
     margin-right: 10px;
 }
 
 .slla-notification-ip {
     font-size: 12px;
-    color: #666666;
+    color: #6B7280;
 }
 
 .slla-notification-time {
     font-size: 12px;
-    color: #666666;
+    color: #6B7280;
     white-space: nowrap;
 }
 
 /* Modern Notice Styling */
 .slla-modern-notice {
-    background: #fff5e0;
-    border-radius: 10px;
-    padding: 20px;
+    background: #E6F0FA; /* Light blue background */
+    border-radius: 8px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
 
@@ -549,13 +566,13 @@
 
     .slla-stats-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 12px;
     }
 
     .slla-failed-attempts-circle {
-        width: 80px;
-        height: 80px;
-        font-size: 22px;
+        width: 70px;
+        height: 70px;
+        font-size: 20px;
     }
 
     .slla-dashboard-wrap {
@@ -567,18 +584,21 @@
     }
 
     .slla-submenu {
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        position: static;
     }
 
     .slla-submenu a {
-        margin: 5px;
+        margin: 0 5px;
+        padding: 8px 12px;
+        font-size: 13px;
     }
 
     .slla-notification-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 5px;
+        gap: 4px;
     }
 
     .slla-notification-time,
@@ -586,7 +606,6 @@
         text-align: left;
     }
 
-    /* Responsive Button Styling */
     .slla-view-more-btn,
     .slla-upgrade-btn,
     .slla-submit-btn,
@@ -595,16 +614,16 @@
     .slla-clear-btn,
     .slla-dashboard-wrap button.button,
     .slla-modern-btn {
-        padding: 12px;
-        font-size: 14px;
+        padding: 8px 16px;
+        font-size: 13px;
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 }
 
 /* Form Group Styling */
 .slla-form-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     position: relative;
 }
 
@@ -612,7 +631,7 @@
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #333333;
+    color: #1F2A44;
     font-size: 14px;
 }
 
@@ -625,39 +644,39 @@
 .slla-form-group input[type="text"],
 .slla-form-group input[type="tel"] {
     width: 100%;
-    max-width: 450px;
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    max-width: 420px;
+    padding: 10px 15px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
     font-size: 14px;
-    color: #333333;
-    background: #ffffff;
+    color: #1F2A44;
+    background: #FFFFFF;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .slla-form-group input[type="text"]:focus,
 .slla-form-group input[type="tel"]:focus {
-    border-color: #f5a623;
+    border-color: #3B82F6; /* Blue border on focus */
     outline: none;
-    box-shadow: 0 0 8px rgba(245, 166, 35, 0.3);
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
 }
 
 .slla-form-group input[type="checkbox"] {
     margin-right: 10px;
-    width: 18px;
-    height: 18px;
-    accent-color: #f5a623;
+    width: 20px;
+    height: 20px;
+    accent-color: #3B82F6;
 }
 
 .slla-form-group .description {
     font-size: 12px;
-    color: #666666;
+    color: #6B7280;
     margin-top: 6px;
 }
 
 .slla-form-group .slla-error-message {
     font-size: 12px;
-    color: #ff6f61;
+    color: #EF4444;
     margin-top: 6px;
     display: flex;
     align-items: center;
@@ -666,30 +685,27 @@
 /* Settings Page Grid Layout */
 .slla-settings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     gap: 20px;
     margin-bottom: 20px;
 }
 
 /* Individual Setting Item Styling */
 .slla-setting-item {
-    background: #ffffff;
+    background: #FFFFFF;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border: none;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 120px;
+    min-height: 110px;
 }
 
-/* Hover Effect for Setting Item */
 .slla-setting-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    border-color: #f5a623;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Specific Styling for GDPR Compliance Checkbox */
@@ -698,55 +714,53 @@
     align-items: center;
     font-size: 14px;
     font-weight: 600;
-    color: #333333;
-    margin-bottom: 10px;
+    color: #1F2A44;
+    margin-bottom: 8px;
 }
 
 .slla-setting-item input[type="checkbox"] {
-    margin-right: 12px;
-    width: 16px;
-    height: 16px;
-    accent-color: #f5a623;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    accent-color: #3B82F6;
 }
 
-/* Description Text Below Checkbox */
 .slla-setting-item .description {
     font-size: 12px;
-    color: #666666;
-    margin-top: 5px;
-    line-height: 1.4;
+    color: #6B7280;
+    margin-top: 6px;
+    line-height: 1.5;
 }
 
-/* Ensure GDPR Section Doesn't Look Empty */
 .slla-setting-item.gdpr-compliance {
-    padding: 15px 20px;
-    min-height: 100px;
+    padding: 15px;
+    min-height: 90px;
 }
 
 /* Tooltip Styling */
 .slla-tooltip {
     position: relative;
     display: inline-block;
-    margin-left: 5px;
+    margin-left: 6px;
 }
 
 .slla-tooltip .dashicons-info-outline {
-    color: #f5a623;
-    font-size: 16px;
+    color: #3B82F6;
+    font-size: 18px;
     cursor: help;
 }
 
 .slla-tooltip .slla-tooltip-text {
     visibility: hidden;
-    width: 200px;
-    background-color: #333333;
-    color: #ffffff;
+    width: 220px;
+    background-color: #1F2A44;
+    color: #FFFFFF;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 6px;
     padding: 8px;
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    bottom: 130%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -761,34 +775,34 @@
 
 /* IP Validation Error Styling */
 .slla-ip-error {
-    margin-top: 5px;
+    margin-top: 6px;
     font-size: 12px;
 }
 
 .slla-input-error {
-    border-color: #ff6f61 !important;
-    box-shadow: 0 0 5px rgba(255, 111, 97, 0.3) !important;
+    border-color: #EF4444 !important;
+    box-shadow: 0 0 5px rgba(239, 68, 68, 0.3) !important;
 }
 
 /* Error Message Preview Styling */
 .slla-error-preview {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    font-size: 13px;
-    color: #333333;
+    margin-top: 8px;
+    padding: 8px;
+    background: #F9FAFB;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1F2A44;
 }
 
 .slla-error-preview strong {
-    color: #f5a623;
+    color: #3B82F6;
 }
 
 /* Adjust Submit Button Margin */
 .slla-submit-btn {
-    margin-top: 20px;
-    margin-right: 10px;
+    margin-top: 15px;
+    margin-right: 8px;
 }
 
 /* Logs Page Filter Form Styling */
@@ -796,7 +810,7 @@
 .slla-log-filters {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 20px;
     flex-wrap: wrap;
 }
@@ -805,24 +819,24 @@
 .slla-log-filters label {
     font-size: 14px;
     font-weight: 500;
-    color: #333333;
+    color: #1F2A44;
 }
 
 .slla-logs-filter-form select.slla-input,
 .slla-log-filters select {
     padding: 8px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
     font-size: 14px;
-    color: #333333;
-    background: #f9f9f9;
+    color: #1F2A44;
+    background: #F9FAFB;
     transition: border-color 0.3s ease;
-    min-width: 150px;
+    min-width: 160px;
 }
 
 .slla-logs-filter-form select.slla-input:focus,
 .slla-log-filters select:focus {
-    border-color: #f5a623;
+    border-color: #3B82F6;
     outline: none;
 }
 
@@ -840,15 +854,16 @@
 .slla-logs-table {
     width: 100%;
     border-collapse: collapse;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
 .slla-dashboard-table thead,
 .slla-logs-table thead {
-    background: #f9f9f9;
+    background: #F9FAFB;
 }
 
 .slla-dashboard-table th,
@@ -857,16 +872,16 @@
     text-align: left;
     font-size: 14px;
     font-weight: 600;
-    color: #333333;
-    border-bottom: 1px solid #e0e0e0;
+    color: #1F2A44;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .slla-dashboard-table td,
 .slla-logs-table td {
     padding: 12px 15px;
-    font-size: 13px;
-    color: #666666;
-    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #6B7280;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 /* Table Row Animation */
@@ -877,13 +892,13 @@
 }
 
 @keyframes fadeInRow {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .slla-dashboard-table tbody tr:hover,
 .slla-logs-table tbody tr:hover {
-    background: #fff5e0;
+    background: #E6F0FA; /* Light blue on hover */
 }
 
 /* Event Type Styling */
@@ -892,143 +907,144 @@
 }
 
 .slla-event-type-successful_login {
-    color: #f5a623;
+    color: #3B82F6;
 }
 
 .slla-event-type-lockout {
-    color: #ff6f61;
+    color: #EF4444;
 }
 
 .slla-event-type-failed_attempt {
-    color: #f5a623;
+    color: #F59E0B;
 }
 
 /* Back to Top Button Styling */
 .slla-back-to-top {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(90deg, #f5a623, #e69500);
-    color: #ffffff;
-    padding: 10px 15px;
-    border-radius: 25px;
+    bottom: 25px;
+    right: 25px;
+    background: #F5A623;
+    color: #FFFFFF;
+    padding: 12px 18px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     display: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
     z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .slla-back-to-top:hover {
-    background: linear-gradient(90deg, #e69500, #d58500);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: #D97706;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-back-to-top:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Premium Page Styling */
 .slla-premium-header {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
-    padding: 25px;
+    padding: 20px;
     margin-bottom: 20px;
     text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-premium-header h2 {
-    color: #333333;
-    font-size: 24px;
-    margin-bottom: 10px;
+    color: #1F2A44;
+    font-size: 20px;
+    margin-bottom: 8px;
 }
 
 .slla-premium-header p {
-    color: #666666;
+    color: #6B7280;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .slla-premium-activation-form {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .slla-premium-activation-form input[type="text"] {
     padding: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
     font-size: 14px;
-    color: #333333;
-    background: #f9f9f9;
-    width: 250px;
+    color: #1F2A44;
+    background: #F9FAFB;
+    width: 260px;
 }
 
 .slla-premium-activation-form input[type="text"]:focus {
-    border-color: #f5a623;
+    border-color: #3B82F6;
     outline: none;
 }
 
 .slla-premium-header .description {
     font-size: 12px;
-    color: #666666;
+    color: #6B7280;
 }
 
 /* Why Upgrade Section */
 .slla-premium-why-upgrade {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
-    padding: 25px;
+    padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-premium-why-upgrade h2 {
-    color: #333333;
-    font-size: 20px;
-    margin-bottom: 15px;
+    color: #1F2A44;
+    font-size: 18px;
+    margin-bottom: 12px;
 }
 
 .slla-premium-why-upgrade p {
-    color: #666666;
+    color: #6B7280;
     font-size: 14px;
 }
 
 /* Features Comparison Table */
 .slla-premium-features {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
-    padding: 25px;
+    padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-premium-features h2 {
-    color: #333333;
-    font-size: 20px;
-    margin-bottom: 20px;
+    color: #1F2A44;
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
 .slla-premium-table {
     width: 100%;
     border-collapse: collapse;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
     overflow: hidden;
 }
 
 .slla-premium-table thead {
-    background: #f9f9f9;
+    background: #F9FAFB;
 }
 
 .slla-premium-table th,
@@ -1036,8 +1052,8 @@
     padding: 12px 15px;
     text-align: center;
     font-size: 14px;
-    color: #333333;
-    border-bottom: 1px solid #e0e0e0;
+    color: #1F2A44;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .slla-premium-table th {
@@ -1050,90 +1066,92 @@
 
 .slla-premium-table .description {
     font-size: 12px;
-    color: #666666;
-    margin-top: 5px;
+    color: #6B7280;
+    margin-top: 6px;
 }
 
 .slla-check {
-    color: #f5a623;
-    font-size: 18px;
+    color: #3B82F6;
+    font-size: 20px;
 }
 
 .slla-cross {
-    color: #ff6f61;
-    font-size: 18px;
+    color: #EF4444;
+    font-size: 20px;
 }
 
 .slla-installed-btn {
-    background: #cccccc;
-    color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 25px;
+    background: #D1D5DB;
+    color: #FFFFFF;
+    padding: 10px 18px;
+    border-radius: 6px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     border: none;
     cursor: not-allowed;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Premium Highlights */
 .slla-premium-highlights {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
 }
 
 .slla-highlight-card {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-highlight-card:hover {
-    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .slla-highlight-card .dashicons {
-    font-size: 40px;
-    color: #f5a623;
-    margin-bottom: 15px;
+    font-size: 36px;
+    color: #3B82F6;
+    margin-bottom: 12px;
 }
 
 .slla-highlight-card h3 {
-    color: #333333;
+    color: #1F2A44;
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .slla-highlight-card p {
-    color: #666666;
-    font-size: 13px;
+    color: #6B7280;
+    font-size: 14px;
     line-height: 1.5;
 }
 
 /* Premium Footer on Settings Page */
 .slla-premium-footer {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    border: none;
     border-radius: 8px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .slla-premium-footer h3 {
-    color: #333333;
+    color: #1F2A44;
     font-size: 18px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .slla-premium-footer .slla-upgrade-btn {
-    background: linear-gradient(90deg, #f5a623, #e69500);
-    color: #ffffff;
+    background: #F5A623;
+    color: #FFFFFF;
 }
 
 /* Responsive Table */
@@ -1143,7 +1161,7 @@
     .slla-logs-table th,
     .slla-logs-table td {
         padding: 8px 10px;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .slla-logs-filter-form,
@@ -1157,7 +1175,7 @@
     .slla-log-filters label,
     .slla-log-filters select {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .slla-clear-logs-form {
@@ -1171,22 +1189,20 @@
 
     .slla-premium-activation-form input[type="text"] {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .slla-premium-table th,
     .slla-premium-table td {
-        font-size: 12px;
+        font-size: 13px;
         padding: 8px;
     }
 
     .slla-premium-table td:first-child {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .slla-premium-table .description {
-        font-size: 10px;
+        font-size: 11px;
     }
-
-    
 }

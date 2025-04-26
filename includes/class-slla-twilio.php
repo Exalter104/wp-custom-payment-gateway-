@@ -146,6 +146,18 @@ class SLLA_Twilio {
             } else {
                 return [ 'error' => __( 'Unable to fetch Twilio usage data.', 'simple-limit-login-attempts' ) ];
             }
+        } catch ( \Twilio\Exceptions\RestException $e ) {
+            error_log( 'Twilio Usage Check Failed: ' . $e->getMessage() );
+            if ( $e->getCode() === 401 ) {
+                // HTTP 401 error means authentication failed (e.g., free trial expired)
+                return [
+                    'error' => sprintf(
+                        __( 'Twilio free trial expired. <a href="%s" target="_blank">Upgrade your Twilio account</a> to continue using SMS features.', 'simple-limit-login-attempts' ),
+                        'https://www.twilio.com/console/billing/upgrade'
+                    )
+                ];
+            }
+            return [ 'error' => __( 'Error fetching Twilio usage: ' . $e->getMessage(), 'simple-limit-login-attempts' ) ];
         } catch ( Exception $e ) {
             error_log( 'Twilio Usage Check Failed: ' . $e->getMessage() );
             return [ 'error' => __( 'Error fetching Twilio usage: ' . $e->getMessage(), 'simple-limit-login-attempts' ) ];
